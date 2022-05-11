@@ -1,3 +1,8 @@
 {
-    "language":"Bahasa Melayu"
+    "language":"Bahasa Melayu",
+    "fullNamefield":"Name Penuh",
+    "icfield":"Nombor IC",
+    "patientIdfield":"ID Pesakit",
+    "addressfield":"Alamat",
+    "followuptreatment":"Klinik Rawatan Susulan"
 }

@@ -1,5 +1,5 @@
-import 'package:carrypill/presentations/pages/authenticate/login.dart';
-import 'package:carrypill/presentations/pages/authenticate/register.dart';
+import 'login.dart';
+import 'register.dart';
 import 'package:flutter/material.dart';
 
 class Authenticate extends StatefulWidget {

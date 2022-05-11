@@ -2,5 +2,11 @@
     "language": "English",
     "@language":{
         "description": "The current Language"
-    }
+    },
+    "fullNamefield":"Full Name",
+    "icfield":"IC Number",
+    "patientIdfield":"Patient ID",
+    "addressfield":"Address",
+    "followuptreatment":"Follow-up Treatment Clinic"
+    
 }
