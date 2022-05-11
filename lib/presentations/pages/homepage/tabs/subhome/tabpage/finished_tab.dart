@@ -1,8 +1,10 @@
 import 'package:carrypill/constants/constant_color.dart';
 import 'package:carrypill/constants/constant_string.dart';
 import 'package:carrypill/constants/constant_widget.dart';
+import 'package:carrypill/data/models/status_enum.dart';
 import 'package:carrypill/presentations/custom_widgets/dash_line.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FinishedTab extends StatefulWidget {
@@ -15,6 +17,7 @@ class FinishedTab extends StatefulWidget {
 class _FinishedTabState extends State<FinishedTab> {
   @override
   Widget build(BuildContext context) {
+    StatusOrder statusOrder = StatusOrder.findingDriver;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 22.w),
       child: Column(
@@ -29,40 +32,7 @@ class _FinishedTabState extends State<FinishedTab> {
             ),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.w),
-              child: Column(
-                children: [
-                  gaphr(h: 48.5),
-                  const SizedBox(
-                    height: 71,
-                    child: Icon(
-                      Icons.task_alt_rounded,
-                      color: kcOrange,
-                      size: 81,
-                    ),
-                  ),
-                  gaphr(h: 40),
-                  Text(
-                    'Congratulation!',
-                    style: kwtextStyleRD(
-                      ff: 'SFProDisplay-Medium',
-                      fs: 32,
-                      c: kcOrange,
-                      fw: FontWeight.w500,
-                    ),
-                  ),
-                  gaphr(),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25.w),
-                    child: Text(
-                      ksorderHaveBeenReceived,
-                      style: kwtextStyleRD(
-                          fs: 15, c: kctextgrey, fw: FontWeight.w500),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  gaphr(h: 49.5),
-                ],
-              ),
+              child: statusWidget(statusOrder),
             ),
           ),
           gaphr(h: 30.5),
@@ -233,6 +203,81 @@ class _FinishedTabState extends State<FinishedTab> {
           gaphr(h: 23),
         ],
       ),
+    );
+  }
+
+  Column statusWidget(StatusOrder statusOrder) {
+    late Widget statusWidget;
+    late String textOrange;
+    late String description;
+    switch (statusOrder) {
+      case StatusOrder.orderReceived:
+        textOrange = 'Congratulation!';
+        description = ksorderReceived;
+        statusWidget = kwOrderReceivedStatusWidget;
+        break;
+      case StatusOrder.findingDriver:
+        textOrange = 'Finding you a driver';
+        description = ksorderReceived;
+        statusWidget = kwfindingDriverStatusWidget;
+        break;
+      case StatusOrder.driverFound:
+        textOrange = 'Driver Found!';
+        description = ksorderReceived;
+        break;
+      case StatusOrder.driverToHospital:
+        textOrange = 'On it!';
+        description = ksdriverToHospital;
+        break;
+      case StatusOrder.driverQueue:
+        textOrange = 'Queueing';
+        description = ksdriverQueue;
+        break;
+      case StatusOrder.orderPreparing:
+        textOrange = 'Waiting';
+        description = ksorderPreparing;
+        break;
+      case StatusOrder.outForDelivery:
+        textOrange = 'Out for Delivery!';
+        description = ksoutForDelivery;
+        break;
+      case StatusOrder.orderArrived:
+        textOrange = 'Arrived!';
+        description = ksorderArrived;
+        break;
+      case StatusOrder.orderComplete:
+        textOrange = 'Arrived!';
+        description = ksorderArrived;
+        break;
+      default:
+        textOrange = 'Order Error ';
+        description = 'system error for the current order';
+        break;
+    }
+    print(textOrange);
+    return Column(
+      children: [
+        statusWidget,
+        Text(
+          textOrange, //'Congratulation!',
+          style: kwtextStyleRD(
+            ff: 'SF UI Text',
+            fs: 32,
+            c: kcOrange,
+            fw: FontWeight.w500,
+          ),
+        ),
+        gaphr(),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 25.w),
+          child: Text(
+            description, //ksorderReceived,
+            style: kwtextStyleRD(fs: 15, c: kctextgrey, fw: FontWeight.w500),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        gaphr(h: 49.5),
+      ],
     );
   }
 }

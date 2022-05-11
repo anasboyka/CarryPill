@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:lottie/lottie.dart';
+
 import 'constant_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -208,3 +210,34 @@ InputDecoration inputDecorationTextField(
         : null,
   );
 }
+
+Widget kwOrderReceivedStatusWidget = Column(
+  children: [
+    gaphr(h: 48.5),
+    const SizedBox(
+      height: 71,
+      child: Icon(
+        Icons.task_alt_rounded,
+        color: kcOrange,
+        size: 81,
+      ),
+    ),
+    gaphr(h: 40),
+  ],
+);
+
+Widget kwfindingDriverStatusWidget = Column(
+  crossAxisAlignment: CrossAxisAlignment.stretch,
+  children: [
+    SizedBox(
+      height: 159.5.h,
+      child: FittedBox(
+        fit: BoxFit.cover,
+        child: Lottie.asset(
+          'assets/lottie/loading.json',
+          fit: BoxFit.fill,
+        ),
+      ),
+    ),
+  ],
+);
