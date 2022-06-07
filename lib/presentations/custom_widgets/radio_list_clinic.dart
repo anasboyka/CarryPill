@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:carrypill/constants/constant_widget.dart';
 import 'package:flutter/material.dart';
 

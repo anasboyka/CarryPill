@@ -1,5 +1,11 @@
 import 'dart:io';
 
+import 'package:carrypill/business_logic/provider/patient_provider.dart';
+import 'package:carrypill/data/models/clinic.dart';
+import 'package:carrypill/data/models/patient.dart';
+import 'package:carrypill/data/repositories/firebase_repo/auth_repo.dart';
+import 'package:provider/provider.dart';
+
 import '../../../constants/constant_color.dart';
 import '../../../constants/constant_widget.dart';
 import 'tabs/cart_tab.dart';
@@ -9,9 +15,8 @@ import 'tabs/profile_tab.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  Patient patient;
+  HomePage({Key? key, required this.patient}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -20,18 +25,49 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int currentIndex = 0;
 
-  final pages = [
-    const HomeTab(),
-    const OrderTab(),
-    const CartTab(),
-    const ProfileTab(),
-  ];
+  // final pages = [
+  //   const HomeTab(),
+  //   const OrderTab(),
+  //   const CartTab(),
+  //   ProfileTab(patient: Provider.of<PatientProvider>(context).patient!),
+  // ];
+
+  // Patient patient = Patient(
+  //     name: 'name',
+  //     icNum: 'icNum',
+  //     phoneNum: 'phoneNum',
+  //     patientId: 'patientId',
+  //     address: 'address',
+  //     clinicList: [
+  //       Clinic(clinicName: 'clinicName', status: true),
+  //       Clinic(clinicName: 'clinicName', status: true),
+  //       Clinic(clinicName: 'clinicName', status: true),
+  //     ],
+  //     appointment: DateTime.now());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    // AuthRepo().logout();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      Provider.of<PatientProvider>(context, listen: false)
+          .updatePatient(widget.patient);
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kcBgHome1,
       body: IndexedStack(
-        children: pages,
+        children: [
+          HomeTab(patient: widget.patient),
+          const OrderTab(),
+          const CartTab(),
+          ProfileTab(patient: widget.patient),
+        ],
         index: currentIndex,
       ),
       bottomNavigationBar: Stack(

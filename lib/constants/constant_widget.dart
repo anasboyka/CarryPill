@@ -241,3 +241,76 @@ Widget kwfindingDriverStatusWidget = Column(
     ),
   ],
 );
+
+Widget kwdriverToHospitalStatusWidget = Column(
+  //crossAxisAlignment: CrossAxisAlignment.stretch,
+  children: [
+    Padding(
+      padding: EdgeInsets.only(right: 30.w),
+      child: SizedBox(
+        height: 159.5.h,
+        width: double.infinity,
+        child: Lottie.asset(
+          'assets/lottie/delivery.json',
+          fit: BoxFit.contain,
+        ),
+      ),
+    ),
+  ],
+);
+
+Widget kwdriverQueueStatusWidget = Column(
+  //crossAxisAlignment: CrossAxisAlignment.stretch,
+  children: [
+    gaphr(h: 12.5),
+    SizedBox(
+      height: 132.h,
+      child: Lottie.asset(
+        'assets/lottie/queue.json',
+        fit: BoxFit.cover,
+      ),
+    ),
+    gaphr(h: 15),
+  ],
+);
+
+Widget kworderPreparingStatusWidget = Column(
+  children: [
+    gaphr(h: 20.5),
+    SizedBox(
+      height: 134.h,
+      child: Lottie.asset(
+        'assets/lottie/waiting.json',
+        fit: BoxFit.cover,
+      ),
+    ),
+    gaphr(h: 5),
+  ],
+);
+
+Widget kwOutForDeliveryStatusWidget = Column(
+  children: [
+    gaphr(h: 20.5),
+    SizedBox(
+      height: 134.h,
+      child: Lottie.asset(
+        'assets/lottie/on_the_way.json',
+        fit: BoxFit.cover,
+      ),
+    ),
+    gaphr(h: 5),
+  ],
+);
+
+Widget kworderArrivedStatusWidget = Column(
+  children: [
+    gaphr(h: 9.5),
+    SizedBox(
+      height: 150.h,
+      child: Lottie.asset(
+        'assets/lottie/arrived.json',
+        fit: BoxFit.cover,
+      ),
+    ),
+  ],
+);

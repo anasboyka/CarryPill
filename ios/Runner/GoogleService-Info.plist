@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>343588197667-7qd8ktaf484ajpdpqmj5l6u3mmpd0t6r.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.343588197667-7qd8ktaf484ajpdpqmj5l6u3mmpd0t6r</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAU4wureUrYsQ50e-uSH-uikK-HK8Bfw6s</string>
+	<key>GCM_SENDER_ID</key>
+	<string>343588197667</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.carrypill</string>
+	<key>PROJECT_ID</key>
+	<string>carrypill</string>
+	<key>STORAGE_BUCKET</key>
+	<string>carrypill.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:343588197667:ios:5032f8cebdba9d0678a896</string>
+</dict>
+</plist>

@@ -120,4 +120,10 @@ mixin InputValidationMixin {
         ? password == confpassword
         : false;
   }
+
+  bool isIcNumValid(String? icNumber) =>
+      icNumber != null ? icNumber.isNotEmpty : false;
+
+  bool isphoneNumValid(String? phoneNum) =>
+      phoneNum != null ? phoneNum.isNotEmpty : false;
 }

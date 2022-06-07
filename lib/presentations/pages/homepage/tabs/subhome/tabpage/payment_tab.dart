@@ -1,13 +1,22 @@
+import 'package:carrypill/business_logic/provider/order_provider.dart';
 import 'package:carrypill/constants/constant_color.dart';
 import 'package:carrypill/constants/constant_widget.dart';
+import 'package:carrypill/data/models/all_enum.dart';
+import 'package:carrypill/data/models/order_service.dart';
 import 'package:carrypill/data/models/payment_type.dart';
+import 'package:carrypill/data/repositories/firebase_repo/firestore_repo.dart';
 import 'package:carrypill/presentations/custom_widgets/dash_line.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class PaymentTab extends StatefulWidget {
   final void Function(int index) changePage;
-  const PaymentTab({Key? key, required this.changePage}) : super(key: key);
+  OrderService? orderService;
+  PaymentTab({Key? key, required this.changePage, this.orderService})
+      : super(key: key);
 
   @override
   _PaymentTabState createState() => _PaymentTabState();
@@ -18,25 +27,43 @@ class _PaymentTabState extends State<PaymentTab> {
     PaymentType(
       imgPath: 'assets/images/debit_credit.png',
       paymentName: 'Debit/Credit Card',
+      paymentMethod: PaymentMethod.debitcredit,
     ),
     PaymentType(
       imgPath: 'assets/images/fpx.png',
       paymentName: 'Online Banking',
+      paymentMethod: PaymentMethod.fpx,
     ),
     PaymentType(
       imgPath: 'assets/images/cod.png',
       paymentName: 'Payment in cash',
+      paymentMethod: PaymentMethod.cash,
     ),
   ];
 
+  int? currentIndex;
+  @override
+  void initState() {
+    // TODO: implement initState
+    //print('init');
+    //print(widget.orderService?.facility);
+    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+    //   Provider.of<OrderProvider>(context, listen: false)
+    //       .updatePatient(widget.patient);
+    // });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var orderProvider = Provider.of<OrderProvider>(context);
+    //print(orderProvider.orderService.facility);
     return Column(
       children: [
         gaphr(h: 110),
         Expanded(
           child: SingleChildScrollView(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 22.w),
               child: Column(
@@ -75,7 +102,7 @@ class _PaymentTabState extends State<PaymentTab> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8.r),
                                   color: kcServiceBg,
-                                  image: DecorationImage(
+                                  image: const DecorationImage(
                                     image: AssetImage(
                                         'assets/images/request_delivery.png'),
                                   ),
@@ -98,7 +125,10 @@ class _PaymentTabState extends State<PaymentTab> {
                                     ),
                                     gaphr(h: 8),
                                     Text(
-                                      'Hospital Sultan Abdul Halim',
+                                      orderProvider.orderService.facility
+                                              ?.facilityName ??
+                                          "",
+                                      //'Hospital Sultan Abdul Halim',
                                       style: kwtextStyleRD(
                                         c: kcSubtitleService.withOpacity(0.56),
                                         fs: 12,
@@ -123,7 +153,7 @@ class _PaymentTabState extends State<PaymentTab> {
                           ),
                           gaphr(h: 12),
                           Text(
-                            '22/02/2022',
+                            DateFormat("dd/MM/yyyy").format(DateTime.now()),
                             style: kwtextStyleRD(
                               c: kcGreyLabel,
                               fs: 15,
@@ -142,7 +172,7 @@ class _PaymentTabState extends State<PaymentTab> {
                                 ),
                               ),
                               Text(
-                                'RM 15.00',
+                                'RM ${orderProvider.orderService.totalPay.toStringAsFixed(2)}',
                                 style: kwtextStyleRD(
                                   c: kcprimarySwatch,
                                   fs: 15,
@@ -186,7 +216,7 @@ class _PaymentTabState extends State<PaymentTab> {
                                 ),
                               ),
                               Text(
-                                'RM 15.00',
+                                'RM ${orderProvider.orderService.totalPay.toStringAsFixed(2)}',
                                 style: kwtextStyleRD(
                                   c: kcOrange,
                                   fs: 17,
@@ -239,29 +269,26 @@ class _PaymentTabState extends State<PaymentTab> {
                             ),
                             leading: Image.asset(paymentTypeList[index].imgPath,
                                 height: 33.h),
-                            shape: cornerR(r: 4),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4.r),
+                                side: (currentIndex != null &&
+                                        currentIndex == index)
+                                    ? const BorderSide(
+                                        color: kcPrimary,
+                                        width: 1,
+                                      )
+                                    : BorderSide.none),
                             tileColor: kcWhite,
-                            onTap: () {
-                              goToPayment(index);
+                            onTap: () async {
+                              Provider.of<OrderProvider>(context, listen: false)
+                                  .setPaymentMethod(
+                                      paymentTypeList[index].paymentMethod);
+
+                              onPaymentSelected(index);
                             },
                           ),
                         );
                       }),
-                  // Column(
-                  //   children: [
-                  //     ListTile(
-                  //       title: Text(
-                  //         paymentTypeList[0].paymentName,
-                  //         style: kwtextStyleRD(
-                  //             fs: 15, fw: FontWeight.w600, c: kctextDark),
-                  //       ),
-                  //       leading: Image.asset(paymentTypeList[0].imgPath,
-                  //           height: 33.h),
-                  //       shape: cornerR(r: 4),
-                  //       tileColor: kcWhite,
-                  //     )
-                  //   ],
-                  // )
                 ],
               ),
             ),
@@ -274,13 +301,33 @@ class _PaymentTabState extends State<PaymentTab> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 37.5.w),
               child: MaterialButton(
+                onPressed: () async {
+                  if (currentIndex != null) {
+                    Provider.of<OrderProvider>(context, listen: false)
+                        .setOrderDate(DateTime.now());
+                    Provider.of<OrderProvider>(context, listen: false)
+                        .setOrderStatus(StatusOrder.orderReceived);
+
+                    print(Provider.of<OrderProvider>(context, listen: false)
+                        .orderService);
+                    OrderService orderService =
+                        Provider.of<OrderProvider>(context, listen: false)
+                            .orderService;
+                    DocumentReference docRef =
+                        await FirestoreRepo().addOrder(orderService);
+
+                    widget.changePage(2);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Please select your payment method')),
+                    );
+                  }
+                },
                 shape: cornerR(r: 8),
                 height: 44.h,
                 minWidth: double.infinity,
                 color: kcPrimary,
-                onPressed: () {
-                  widget.changePage(1);
-                },
                 child: textBtn15('Place Order'),
               ),
             ),
@@ -290,7 +337,10 @@ class _PaymentTabState extends State<PaymentTab> {
     );
   }
 
-  void goToPayment(int index) {
+  void onPaymentSelected(int index) {
+    setState(() {
+      currentIndex = index;
+    });
     print(index);
   }
 }

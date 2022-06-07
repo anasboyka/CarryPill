@@ -1,3 +1,10 @@
+import 'package:carrypill/business_logic/provider/order_provider.dart';
+import 'package:carrypill/data/models/all_enum.dart';
+import 'package:carrypill/data/models/patient.dart';
+import 'package:carrypill/data/models/patient_uid.dart';
+import 'package:carrypill/data/repositories/firebase_repo/auth_repo.dart';
+import 'package:provider/provider.dart';
+
 import '../../../../constants/constant_color.dart';
 import '../../../../constants/constant_string.dart';
 import '../../../../constants/constant_widget.dart';
@@ -6,15 +13,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeTab extends StatefulWidget {
-  const HomeTab({Key? key}) : super(key: key);
+  Patient patient;
+  HomeTab({Key? key, required this.patient}) : super(key: key);
 
   @override
   _HomeTabState createState() => _HomeTabState();
 }
 
 class _HomeTabState extends State<HomeTab> {
+  late Patient patient;
+  @override
+  void initState() {
+    // TODO: implement initState
+    patient = widget.patient;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final patientuid = Provider.of<PatientUid?>(context);
     return Stack(
       children: [
         SizedBox(
@@ -31,7 +48,7 @@ class _HomeTabState extends State<HomeTab> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 206.h,
+                  //height: 206.h,
                   width: double.infinity,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -53,7 +70,9 @@ class _HomeTabState extends State<HomeTab> {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: 'Samad',
+                                    text: patient.name
+                                        .split(' ')
+                                        .first, //'Samad',
                                     style: kwtextStyleRD(
                                         fs: 34.sp,
                                         c: kcLightYellow,
@@ -74,18 +93,23 @@ class _HomeTabState extends State<HomeTab> {
                         ),
                         gaphr(h: 4),
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Icon(
                               Icons.location_on,
                               color: Colors.white,
                               size: 18,
                             ),
-                            Text(
-                              '225, Bandar Amanjaya, 08000 Sungai Petani Kedah',
-                              style: kwtextStyleRD(
-                                fs: 12,
-                                fw: FontWeight.w600,
-                                c: kcWhite,
+                            gapwr(w: 5),
+                            Flexible(
+                              child: Text(
+                                patient.address ??
+                                    "Set your address", //'225, Bandar Amanjaya, 08000 Sungai Petani Kedah',
+                                style: kwtextStyleRD(
+                                  fs: 12,
+                                  fw: FontWeight.w600,
+                                  c: kcWhite,
+                                ),
                               ),
                             )
                           ],
@@ -272,8 +296,26 @@ class _HomeTabState extends State<HomeTab> {
                               ),
                             ),
                           ),
-                          onTap: () {
-                            //TODO
+                          onTap: () async {
+                            //TODO check if address not null
+                            // bool profileComplete = (patient.address != null &&
+                            //     patient.appointment != null &&
+                            //     patient.geoPoint != null &&
+                            //     patient.patientId != null);
+
+                            //if (profileComplete) {
+                            Provider.of<OrderProvider>(context, listen: false)
+                                .setServiceType(ServiceType.requestDelivery);
+                            Provider.of<OrderProvider>(context, listen: false)
+                                .setPatientRef(patientuid!.uid);
+                            Navigator.of(context).pushNamed('/requestdelivery');
+                            // } else {
+                            //   ScaffoldMessenger.of(context).showSnackBar(
+                            //     const SnackBar(
+                            //         content: Text(
+                            //             'Please complete your profile info before order')),
+                            //   );
+                            // }
                           },
                         ),
                       )

@@ -23,8 +23,13 @@ const kctextDark = Color(0xFF222B45);
 const kctextgrey = Color(0xFF757C8B);
 const kctextpurplepink = Color(0xFFC430A2);
 const kccontainerPink = Color(0xFFFFE5FF);
+const kcsubtitleListTile1 = Color(0xFF77838F);
+const kcsubtitleListTile2 = Color(0xFF999999);
 
+const kcsubtitle3 = Color(0xFF555555);
 const ktest = Color(0xFF2E3A59);
+
+final kcboxshadow = const Color(0xFF333333).withOpacity(0.03);
 
 MaterialColor kcprimarySwatch = createMaterialColor(kcPrimary);
 MaterialColor createMaterialColor(Color color) {
