@@ -23,10 +23,10 @@ class LocationProvider {
     return await geolocatorPlatform.checkPermission();
   }
 
-  Future<LocationPermission> requestPermission() async {
-    //GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
-    return await geolocatorPlatform.requestPermission();
-  }
+  // Future<LocationPermission> requestPermission() async {
+  //   //GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
+  //   return await geolocatorPlatform.requestPermission();
+  // }
 
   double calculateDistanceInKm(
       double lat1, double lon1, double lat2, double lon2) {

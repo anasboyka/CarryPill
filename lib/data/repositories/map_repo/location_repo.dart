@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:carrypill/data/dataproviders/map_provider/location_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
@@ -48,9 +50,12 @@ class LocationRepo {
       return "Please enable your location";
     }
 
+    // if (Platform.isAndroid) {
     LocationPermission permission = await LocationProvider().checkPermission();
+    print('checkpermission');
     if (permission == LocationPermission.denied) {
-      permission = await LocationProvider().requestPermission();
+      permission = await GeolocatorPlatform.instance
+          .requestPermission(); //await LocationProvider().requestPermission();
       if (permission == LocationPermission.denied ||
           permission == LocationPermission.deniedForever) {
         return "Please give access to location permission";
@@ -58,6 +63,7 @@ class LocationRepo {
         return true;
       }
     }
+    //}
 
     return true;
   }

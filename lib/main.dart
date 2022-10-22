@@ -22,7 +22,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   Position? position = await LocationRepo().initPosition();
-  //print(position);
+  print(position);
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<ProviderLocation>.value(
       value: ProviderLocation(position: position),
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
         designSize: const Size(390, 844),
-        builder: (context) {
+        builder: (context, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(

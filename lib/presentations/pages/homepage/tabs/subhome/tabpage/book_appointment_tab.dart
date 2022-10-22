@@ -13,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -369,11 +370,25 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                     GeoPoint geoAddress;
                     GeoPoint geoFacility;
                     double totalPay;
-
-                    var addresses = await locationFromAddress(addressCon.text);
-                    //print(addresses.first);
-                    var address = addresses.first;
+                    dynamic addresses;
+                    dynamic address;
+                    addresses = await locationFromAddress(addressCon.text);
+                    address = addresses.first;
                     geoAddress = GeoPoint(address.latitude, address.longitude);
+
+                    // try {
+                    //   addresses = await locationFromAddress(addressCon.text);
+                    //   address = addresses.first;
+                    //   geoAddress =
+                    //       GeoPoint(address.latitude, address.longitude);
+                    // } on Exception catch (e) {
+                    //   print(e);
+                    //   Position pos = await LocationRepo().getCurrentLocation();
+                    //   geoAddress = GeoPoint(pos.latitude, pos.longitude);
+
+                    //   // TODO
+                    // }
+
                     geoFacility = GeoPoint(facility!.geoPoint.latitude,
                         facility!.geoPoint.longitude);
                     totalPay = LocationRepo()

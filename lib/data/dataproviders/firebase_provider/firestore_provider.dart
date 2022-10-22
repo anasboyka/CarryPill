@@ -3,6 +3,7 @@ import 'package:carrypill/data/models/clinic.dart';
 import 'package:carrypill/data/models/facility.dart';
 import 'package:carrypill/data/models/order_service.dart';
 import 'package:carrypill/data/models/patient.dart';
+import 'package:carrypill/data/models/rider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreProvider {
@@ -20,6 +21,9 @@ class FirestoreProvider {
 
   final CollectionReference orderCollection =
       FirebaseFirestore.instance.collection('orders');
+
+  final CollectionReference riderCollection =
+      FirebaseFirestore.instance.collection('riders');
 
   //update doc
   Future updateAllPatientInfoData(Patient patient) async {
@@ -105,9 +109,9 @@ class FirestoreProvider {
     });
   }
 
-  Future updateOrderCompleteDate(DateTime dateTime, String id) async {
+  Future updateOrderDateComplete(DateTime dateTime, String id) async {
     return await orderCollection.doc(id).update({
-      'orderComplete': dateTime,
+      'orderDateComplete': dateTime,
     });
   }
 
@@ -119,6 +123,17 @@ class FirestoreProvider {
         .get()
         .then((data) => OrderService.fromFirestore(data.docs.first));
   }
+
+//in progress
+  // Future<Rider> getRider() async {
+  //   return await riderCollection
+  //       .where('currentCustomerId', isEqualTo: uid)
+  //       .limit(1)
+  //       .get()
+  //       .then(
+  //         (data) => Rider.fromFirestore(data.docs.first),
+  //       );
+  // }
 
   Stream<OrderService> streamUserCurrentOrder({bool descending = true}) {
     var snap = orderCollection

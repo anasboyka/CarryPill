@@ -6,6 +6,7 @@ import 'package:carrypill/data/models/order_service.dart';
 import 'package:carrypill/data/models/patient.dart';
 import 'package:carrypill/data/models/all_enum.dart';
 import 'package:carrypill/data/models/patient_uid.dart';
+import 'package:carrypill/data/models/rider.dart';
 import 'package:carrypill/data/repositories/firebase_repo/auth_repo.dart';
 import 'package:carrypill/data/repositories/firebase_repo/firestore_repo.dart';
 import 'package:carrypill/presentations/custom_widgets/dash_line.dart';
@@ -24,6 +25,7 @@ class FinishedTab extends StatefulWidget {
 }
 
 class _FinishedTabState extends State<FinishedTab> {
+  Rider? rider;
   // Patient patient = Patient(
   //     name: 'name',
   //     icNum: 'icNum',
@@ -147,24 +149,23 @@ class _FinishedTabState extends State<FinishedTab> {
                       cardBottomWidget = gapw(w: 0);
                       break;
                   }
-                  Future.delayed(const Duration(seconds: 3), () async {
-                    // print('here start');
-                    // await Future.delayed(Duration(seconds: 1));
-                    // print('after 1 seconds');
-                    OrderService orderService =
-                        await FirestoreRepo(uid: useraccount.uid)
-                            .getOrderService();
-                    // await FirestoreProvider().getOrderService();
-                    String? uid = orderService.documentID;
+                  Future.delayed(
+                    const Duration(seconds: 3),
+                    () async {
+                      OrderService orderService =
+                          await FirestoreRepo(uid: useraccount.uid)
+                              .getOrderService();
+                      // await FirestoreProvider().getOrderService();
+                      String? uid = orderService.documentID;
 
-                    if (uid != null &&
-                        orderService.statusOrder == StatusOrder.orderReceived) {
-                      FirestoreRepo()
-                          .updateStatusOrder(StatusOrder.findingDriver, uid);
-                    }
-                    // FirestoreRepo().updateStatusOrder(StatusOrder.findingDriver, orderId)
-                  });
-                  print('return');
+                      if (uid != null &&
+                          orderService.statusOrder ==
+                              StatusOrder.orderReceived) {
+                        FirestoreRepo()
+                            .updateStatusOrder(StatusOrder.findingDriver, uid);
+                      }
+                    },
+                  );
                   return Column(
                     children: [
                       gaphr(h: 110),
@@ -303,7 +304,8 @@ class _FinishedTabState extends State<FinishedTab> {
 
                   if (uid != null &&
                       orderService.statusOrder == StatusOrder.orderArrived) {
-                    FirestoreRepo().updateOrderComplete(DateTime.now(), uid);
+                    FirestoreRepo()
+                        .updateOrderDateComplete(DateTime.now(), uid);
                     Navigator.of(context).pop();
                   }
                 },

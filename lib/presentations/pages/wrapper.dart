@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 
 class Wrapper extends StatelessWidget {
   Wrapper({Key? key}) : super(key: key);
-  bool alreadyLogin = true;
+  //bool alreadyLogin = true;
 
   @override
   Widget build(BuildContext context) {

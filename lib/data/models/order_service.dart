@@ -12,9 +12,8 @@ class OrderService {
   PaymentMethod? paymentMethod;
   double totalPay;
 
-  //DateTime? appointment;
   DateTime? orderDate;
-  DateTime? orderComplete;
+  DateTime? orderDateComplete;
   String? patientRef;
   DocumentSnapshot? snapshot;
   DocumentReference? reference;
@@ -28,7 +27,7 @@ class OrderService {
     this.totalPay = 0,
     //this.appointment,
     this.orderDate,
-    this.orderComplete,
+    this.orderDateComplete,
     this.patientRef,
     this.snapshot,
     this.reference,
@@ -53,7 +52,7 @@ class OrderService {
           : null,
       totalPay: map['totalPay'],
       orderDate: map['orderDate']?.toDate(),
-      orderComplete: map['orderComplete']?.toDate(),
+      orderDateComplete: map['orderDateComplete']?.toDate(),
       patientRef: map['patientRef'],
       // appointment: map['appointment']?.toDate(),
       snapshot: snapshot,
@@ -80,7 +79,7 @@ class OrderService {
           : null,
       totalPay: map['totalPay'],
       orderDate: (map['orderDate']?.toDate()),
-      orderComplete: map['orderComplete']?.toDate(),
+      orderDateComplete: map['orderDateComplete']?.toDate(),
       patientRef: map['patientRef'],
       // appointment: map['appointment']?.toDate(),
     );
@@ -93,7 +92,7 @@ class OrderService {
         'paymentMethod': paymentMethod?.name,
         'totalPay': totalPay,
         'orderDate': orderDate,
-        'orderComplete': orderComplete,
+        'orderDateComplete': orderDateComplete,
         'patientRef': patientRef
         // 'appointment': appointment,
       };
@@ -105,7 +104,7 @@ class OrderService {
     final PaymentMethod? paymentMethod,
     final double? totalPay,
     final DateTime? orderDate,
-    final DateTime? orderComplete,
+    final DateTime? orderDateComplete,
     final DateTime? appointment,
     final String? patientRef,
   }) {
@@ -116,7 +115,7 @@ class OrderService {
       paymentMethod: paymentMethod ?? this.paymentMethod,
       totalPay: totalPay ?? this.totalPay,
       orderDate: orderDate ?? this.orderDate,
-      orderComplete: orderComplete ?? this.orderComplete,
+      orderDateComplete: orderDateComplete ?? this.orderDateComplete,
       patientRef: patientRef ?? this.patientRef,
       // appointment: appointment ?? this.appointment,
     );
@@ -124,7 +123,7 @@ class OrderService {
 
   @override
   String toString() {
-    return '{clinicList.toString()}, ${statusOrder.toString()}, ${orderDate.toString()}, ${orderComplete.toString()},${totalPay.toString()},${paymentMethod.toString()},${orderDate.toString()},${serviceType.toString()},${patientRef.toString()} ';
+    return '{clinicList.toString()}, ${statusOrder.toString()}, ${orderDate.toString()}, ${orderDateComplete.toString()},${totalPay.toString()},${paymentMethod.toString()},${orderDate.toString()},${serviceType.toString()},${patientRef.toString()} ';
   }
 
   @override

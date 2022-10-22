@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     // AuthRepo().logout();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<PatientProvider>(context, listen: false)
           .updatePatient(widget.patient);
     });

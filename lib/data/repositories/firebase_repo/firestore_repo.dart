@@ -4,6 +4,7 @@ import 'package:carrypill/data/models/clinic.dart';
 import 'package:carrypill/data/models/facility.dart';
 import 'package:carrypill/data/models/order_service.dart';
 import 'package:carrypill/data/models/patient.dart';
+import 'package:carrypill/data/models/rider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreRepo {
@@ -68,13 +69,18 @@ class FirestoreRepo {
     return await FirestoreProvider().updateOrderStatus(statusOrder, orderId);
   }
 
-  Future updateOrderComplete(DateTime dateTime, String id) async {
-    return await FirestoreProvider().updateOrderCompleteDate(dateTime, id);
+  Future updateOrderDateComplete(DateTime dateTime, String id) async {
+    return await FirestoreProvider().updateOrderDateComplete(dateTime, id);
   }
 
   Future getOrderService() async {
     return await FirestoreProvider(uid: uid).getOrderService();
   }
+
+//in progress
+  // Future<Rider> findRider() async {
+  //   return await FirestoreProvider(uid: uid).getRider();
+  // }
 
   Stream<OrderService> streamCurrentOrder({bool descending = true}) {
     return FirestoreProvider().streamUserCurrentOrder(descending: descending);
@@ -83,5 +89,6 @@ class FirestoreRepo {
   Stream<List<OrderService>> streamListOrder({bool descending = true}) {
     return FirestoreProvider(uid: uid).getOrderListStream(descending);
   }
+
   //down order
 }
