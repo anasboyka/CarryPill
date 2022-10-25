@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:carrypill/constants/constant_color.dart';
 import 'package:carrypill/constants/constant_string.dart';
 import 'package:carrypill/constants/constant_widget.dart';
@@ -26,6 +28,11 @@ class FinishedTab extends StatefulWidget {
 
 class _FinishedTabState extends State<FinishedTab> {
   Rider? rider;
+  Widget statusWidget = kwOrderReceivedStatusWidget;
+  String textOrange = 'Congratulation!';
+  String description = ksorderReceived;
+  late Widget cardBottomWidget;
+  StreamSubscription? streamSubscription;
   // Patient patient = Patient(
   //     name: 'name',
   //     icNum: 'icNum',
@@ -51,37 +58,58 @@ class _FinishedTabState extends State<FinishedTab> {
         builder: (_, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             OrderService orderService = snapshot.data;
-            print(orderService.statusOrder);
+            // print(orderService.statusOrder);
             return SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 22.w),
                 child: Builder(builder: (context) {
-                  late Widget statusWidget;
-                  late String textOrange;
-                  late String description;
-                  late Widget cardBottomWidget;
+                  // late Widget statusWidget;
+                  // late String textOrange;
+                  // late String description;
+                  // late Widget cardBottomWidget;
+
                   switch (orderService.statusOrder) {
-                    case StatusOrder.orderReceived:
-                      textOrange = 'Congratulation!';
-                      description = ksorderReceived;
-                      statusWidget = kwOrderReceivedStatusWidget;
-                      cardBottomWidget =
-                          deliveryServiceStatusWidget(orderService);
-                      break;
+                    // case StatusOrder.orderReceived:
+                    //   textOrange = 'Congratulation!';
+                    //   description = ksorderReceived;
+                    //   statusWidget = kwOrderReceivedStatusWidget;
+                    //   cardBottomWidget =
+                    //       deliveryServiceStatusWidget(orderService);
+                    //   break;
                     case StatusOrder.findingDriver:
-                      textOrange = 'Finding you a driver';
-                      description = ksorderReceived;
-                      statusWidget = kwfindingDriverStatusWidget;
+                      // textOrange = 'Congratulation!';
+                      // description = ksorderReceived;
+                      // statusWidget = kwOrderReceivedStatusWidget;
                       cardBottomWidget =
                           deliveryServiceStatusWidget(orderService);
+                      Future.delayed(const Duration(seconds: 2), () async {
+                        if (orderService.orderQueryStatus == null) {
+                          await FirestoreRepo().updateOrderQueryStatus(
+                              'findingDriver', orderService.documentID!);
+                          setState(() {});
+                        }
+                        if (streamSubscription == null) {
+                          streamStartFindRider(orderService.documentID!);
+                        }
+
+                        textOrange = 'Finding you a driver';
+                        description = ksorderReceived;
+                        statusWidget = kwfindingDriverStatusWidget;
+                        cardBottomWidget =
+                            deliveryServiceStatusWidget(orderService);
+                      });
                       break;
                     case StatusOrder.driverFound:
+                      streamSubscription
+                          ?.cancel()
+                          .then((_) => streamSubscription = null);
                       textOrange = 'Driver Found!';
                       description = ksorderReceived;
                       statusWidget = driverfoundStatusWidget(
                           'Mohamed Salah', 'Ysuku', 'DBQ 4021', 4.5);
                       cardBottomWidget =
                           deliveryServiceStatusWidget(orderService);
+
                       break;
                     case StatusOrder.driverToHospital:
                       textOrange = 'On it!';
@@ -149,23 +177,23 @@ class _FinishedTabState extends State<FinishedTab> {
                       cardBottomWidget = gapw(w: 0);
                       break;
                   }
-                  Future.delayed(
-                    const Duration(seconds: 3),
-                    () async {
-                      OrderService orderService =
-                          await FirestoreRepo(uid: useraccount.uid)
-                              .getOrderService();
-                      // await FirestoreProvider().getOrderService();
-                      String? uid = orderService.documentID;
+                  // Future.delayed(
+                  //   const Duration(seconds: 3),
+                  //   () async {
+                  //     OrderService orderService =
+                  //         await FirestoreRepo(uid: useraccount.uid)
+                  //             .getOrderService();
+                  //     // await FirestoreProvider().getOrderService();
+                  //     String? uid = orderService.documentID;
 
-                      if (uid != null &&
-                          orderService.statusOrder ==
-                              StatusOrder.orderReceived) {
-                        FirestoreRepo()
-                            .updateStatusOrder(StatusOrder.findingDriver, uid);
-                      }
-                    },
-                  );
+                  //     if (uid != null &&
+                  //         orderService.statusOrder ==
+                  //             StatusOrder.orderReceived) {
+                  //       FirestoreRepo()
+                  //           .updateStatusOrder(StatusOrder.findingDriver, uid);
+                  //     }
+                  //   },
+                  // );
                   return Column(
                     children: [
                       gaphr(h: 110),
@@ -195,6 +223,36 @@ class _FinishedTabState extends State<FinishedTab> {
             );
           }
         });
+  }
+
+  streamStartFindRider(String orderId) {
+    Stream<List<Rider>?> streamRiders =
+        FirestoreRepo().streamFindRiderAvailable();
+    streamSubscription = streamRiders.listen((event) async {
+      if (event != null && event.isNotEmpty) {
+        streamSubscription?.pause();
+        for (var i = 0; i < event.length; i++) {
+          Rider rider = event[i];
+          if (rider.orderCancelId != null) {
+            if (rider.orderCancelId!.isNotEmpty &&
+                !rider.orderCancelId!.contains(orderId)) {
+              await FirestoreRepo()
+                  .updateRiderPending(rider.documentID!, orderId);
+              break;
+            } else {
+              if (streamSubscription!.isPaused) {
+                streamSubscription?.resume();
+              }
+            }
+            //progress
+          } else {
+            await FirestoreRepo()
+                .updateRiderPending(rider.documentID!, orderId);
+            break;
+          }
+        }
+      }
+    });
   }
 
   Widget driverInfoStatusWidget(

@@ -306,7 +306,7 @@ class _PaymentTabState extends State<PaymentTab> {
                     Provider.of<OrderProvider>(context, listen: false)
                         .setOrderDate(DateTime.now());
                     Provider.of<OrderProvider>(context, listen: false)
-                        .setOrderStatus(StatusOrder.orderReceived);
+                        .setOrderStatus(StatusOrder.findingDriver);
 
                     print(Provider.of<OrderProvider>(context, listen: false)
                         .orderService);

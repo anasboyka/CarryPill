@@ -11,10 +11,11 @@ class OrderService {
   ServiceType? serviceType;
   PaymentMethod? paymentMethod;
   double totalPay;
-
   DateTime? orderDate;
   DateTime? orderDateComplete;
+  String? orderQueryStatus;
   String? patientRef;
+  String? riderRef;
   DocumentSnapshot? snapshot;
   DocumentReference? reference;
   String? documentID;
@@ -25,10 +26,11 @@ class OrderService {
     this.serviceType,
     this.paymentMethod,
     this.totalPay = 0,
-    //this.appointment,
     this.orderDate,
     this.orderDateComplete,
+    this.orderQueryStatus,
     this.patientRef,
+    this.riderRef,
     this.snapshot,
     this.reference,
     this.documentID,
@@ -53,8 +55,9 @@ class OrderService {
       totalPay: map['totalPay'],
       orderDate: map['orderDate']?.toDate(),
       orderDateComplete: map['orderDateComplete']?.toDate(),
+      orderQueryStatus: map['orderQueryStatus'],
       patientRef: map['patientRef'],
-      // appointment: map['appointment']?.toDate(),
+      riderRef: map['riderRef'],
       snapshot: snapshot,
       reference: snapshot.reference,
       documentID: snapshot.id,
@@ -80,8 +83,9 @@ class OrderService {
       totalPay: map['totalPay'],
       orderDate: (map['orderDate']?.toDate()),
       orderDateComplete: map['orderDateComplete']?.toDate(),
+      orderQueryStatus: map['orderQueryStatus'],
       patientRef: map['patientRef'],
-      // appointment: map['appointment']?.toDate(),
+      riderRef: map['riderRef'],
     );
   }
 
@@ -93,33 +97,34 @@ class OrderService {
         'totalPay': totalPay,
         'orderDate': orderDate,
         'orderDateComplete': orderDateComplete,
-        'patientRef': patientRef
-        // 'appointment': appointment,
+        'orderQueryStatus': orderQueryStatus,
+        'patientRef': patientRef,
+        'riderRef': riderRef,
       };
 
-  OrderService copyWith({
-    required final List<Clinic> clinicList,
-    final StatusOrder? statusOrder,
-    final ServiceType? serviceType,
-    final PaymentMethod? paymentMethod,
-    final double? totalPay,
-    final DateTime? orderDate,
-    final DateTime? orderDateComplete,
-    final DateTime? appointment,
-    final String? patientRef,
-  }) {
-    return OrderService(
-      // clinicList: clinicList,
-      statusOrder: statusOrder ?? this.statusOrder,
-      serviceType: serviceType ?? this.serviceType,
-      paymentMethod: paymentMethod ?? this.paymentMethod,
-      totalPay: totalPay ?? this.totalPay,
-      orderDate: orderDate ?? this.orderDate,
-      orderDateComplete: orderDateComplete ?? this.orderDateComplete,
-      patientRef: patientRef ?? this.patientRef,
-      // appointment: appointment ?? this.appointment,
-    );
-  }
+  // OrderService copyWith({
+  //   required final List<Clinic> clinicList,
+  //   final StatusOrder? statusOrder,
+  //   final ServiceType? serviceType,
+  //   final PaymentMethod? paymentMethod,
+  //   final double? totalPay,
+  //   final DateTime? orderDate,
+  //   final DateTime? orderDateComplete,
+  //   final DateTime? appointment,
+  //   final String? patientRef,
+  // }) {
+  //   return OrderService(
+  //     // clinicList: clinicList,
+  //     statusOrder: statusOrder ?? this.statusOrder,
+  //     serviceType: serviceType ?? this.serviceType,
+  //     paymentMethod: paymentMethod ?? this.paymentMethod,
+  //     totalPay: totalPay ?? this.totalPay,
+  //     orderDate: orderDate ?? this.orderDate,
+  //     orderDateComplete: orderDateComplete ?? this.orderDateComplete,
+  //     patientRef: patientRef ?? this.patientRef,
+  //     // appointment: appointment ?? this.appointment,
+  //   );
+  // }
 
   @override
   String toString() {

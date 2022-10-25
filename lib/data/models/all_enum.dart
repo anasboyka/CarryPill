@@ -1,6 +1,6 @@
 enum StatusOrder {
   noOrder,
-  orderReceived,
+  // orderReceived,
   findingDriver,
   driverFound,
   driverToHospital,

@@ -77,10 +77,10 @@ class FirestoreRepo {
     return await FirestoreProvider(uid: uid).getOrderService();
   }
 
-//in progress
-  // Future<Rider> findRider() async {
-  //   return await FirestoreProvider(uid: uid).getRider();
-  // }
+  Future updateOrderQueryStatus(String orderQueryStatus, String orderId) async {
+    return await FirestoreProvider()
+        .updateOrderQueryStatus(orderQueryStatus, orderId);
+  }
 
   Stream<OrderService> streamCurrentOrder({bool descending = true}) {
     return FirestoreProvider().streamUserCurrentOrder(descending: descending);
@@ -91,4 +91,21 @@ class FirestoreRepo {
   }
 
   //down order
+
+  //up rider
+
+  Future updateRiderPending(String riderId, String orderId) async {
+    return await FirestoreProvider(uid: uid)
+        .updateRiderPending(riderId, orderId);
+  }
+
+  Future updateRiderWorkingStatus(String status) async {
+    return await FirestoreProvider(uid: uid).updateRiderWorkingStatus(status);
+  }
+
+  Stream<List<Rider>?> streamFindRiderAvailable({bool descending = true}) {
+    return FirestoreProvider().getRiderListAvailableStream(descending);
+  }
+
+  //down rider
 }

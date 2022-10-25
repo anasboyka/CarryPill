@@ -12,6 +12,7 @@ class Rider {
   final bool? isProfileComplete;
   final String? currentCustomerId;
   final DateTime? startWorkingDate;
+  final List<String>? orderCancelId;
   final DocumentSnapshot? snapshot;
   final DocumentReference? reference;
   final String? documentID;
@@ -28,6 +29,7 @@ class Rider {
     this.isProfileComplete,
     this.startWorkingDate,
     this.currentCustomerId,
+    this.orderCancelId,
     this.snapshot,
     this.reference,
     this.documentID,
@@ -47,6 +49,8 @@ class Rider {
       isProfileComplete: map['isProfileComplete'],
       startWorkingDate: map['startWorkingDate'],
       currentCustomerId: map['currentCustomerId'],
+      orderCancelId:
+          map['orderCancelId'] != null ? List.from(map['orderCancelId']) : null,
       snapshot: snapshot,
       reference: snapshot.reference,
       documentID: snapshot.id,
@@ -77,6 +81,7 @@ class Rider {
         'autoAccept': autoAccept,
         'startWorkingDate': startWorkingDate,
         'currentCustomerId': currentCustomerId,
+        'orderCancelId': orderCancelId,
       };
 
   @override

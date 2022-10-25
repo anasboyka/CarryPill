@@ -109,6 +109,13 @@ class FirestoreProvider {
     });
   }
 
+  Future updateRiderPending(String riderId, String orderId) async {
+    return await riderCollection.doc(riderId).update({
+      'workingStatus': 'Pending',
+      'currentOrderId': orderId,
+    });
+  }
+
   Future updateOrderDateComplete(DateTime dateTime, String id) async {
     return await orderCollection.doc(id).update({
       'orderDateComplete': dateTime,
@@ -135,6 +142,20 @@ class FirestoreProvider {
   //       );
   // }
 
+  Future updateOrderQueryStatus(String orderQueryStatus, String orderId) async {
+    return await orderCollection.doc(orderId).update({
+      'orderQueryStatus': orderQueryStatus,
+    });
+  }
+
+  // Future updateRiderPending() async {
+  //   return await riderCollection.doc(uid).update({'workingStatus': 'Pending'});
+  // }
+
+  Future updateRiderWorkingStatus(String status) async {
+    return await riderCollection.doc(uid).update({'workingStatus': status});
+  }
+
   Stream<OrderService> streamUserCurrentOrder({bool descending = true}) {
     var snap = orderCollection
         .where('patientRef', isEqualTo: uid)
@@ -157,4 +178,28 @@ class FirestoreProvider {
   }
 
   //down order
+
+  //up rider
+
+  Stream<Rider> getRiderAvailable({bool descending = true}) {
+    var snap = riderCollection
+        .where('workingStatus', isEqualTo: 'isWaitingForOrder')
+        .orderBy('startWorkingDate', descending: descending)
+        .limit(1)
+        .snapshots();
+    return snap.map((event) => Rider.fromFirestore(event.docs.first));
+  }
+
+  Stream<List<Rider>?> getRiderListAvailableStream(bool descending) {
+    return riderCollection
+        .where('workingStatus', isEqualTo: 'isWaitingForOrder')
+        .orderBy('startWorkingDate', descending: descending)
+        .snapshots()
+        .map(_riderListFromSnapshot);
+  }
+
+  List<Rider> _riderListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) => Rider.fromFirestore(doc)).toList();
+  }
+  //down rider
 }
