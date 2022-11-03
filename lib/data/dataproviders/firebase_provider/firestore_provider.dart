@@ -110,9 +110,12 @@ class FirestoreProvider {
   }
 
   Future updateRiderPending(String riderId, String orderId) async {
-    return await riderCollection.doc(riderId).update({
+    await riderCollection.doc(riderId).update({
       'workingStatus': 'Pending',
       'currentOrderId': orderId,
+    });
+    await orderCollection.doc(orderId).update({
+      'riderPending': true,
     });
   }
 
@@ -181,13 +184,36 @@ class FirestoreProvider {
 
   //up rider
 
-  Stream<Rider> getRiderAvailable({bool descending = true}) {
+  Future getCurrentRider(String riderId) async {
+    return riderCollection
+        .doc(riderId)
+        .get()
+        .then((doc) => Rider.fromFirestore(doc));
+  }
+
+  Stream<Rider?> getCurrentRiderStream(String riderId) {
+    return riderCollection
+        .doc(riderId)
+        .snapshots()
+        .map((doc) => Rider.fromFirestore(doc));
+  }
+
+  Stream<Rider> getRiderAvailable(bool descending) {
     var snap = riderCollection
         .where('workingStatus', isEqualTo: 'isWaitingForOrder')
         .orderBy('startWorkingDate', descending: descending)
         .limit(1)
         .snapshots();
-    return snap.map((event) => Rider.fromFirestore(event.docs.first));
+    return snap.map((event) {
+      // print('debugggggggggg');
+      // print(Rider.fromFirestore(event.docs.first).toString());
+      return Rider.fromFirestore(event.docs.first);
+    });
+  }
+
+  Stream<Rider> getRiderPendingStatus(String riderId) {
+    var snap = riderCollection.doc(riderId).snapshots();
+    return snap.map((event) => Rider.fromFirestore(event));
   }
 
   Stream<List<Rider>?> getRiderListAvailableStream(bool descending) {

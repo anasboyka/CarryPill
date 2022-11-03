@@ -82,10 +82,10 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
     //     builder: (context, patientProvider, child) {
     //   fullNameCon.text = patientProvider.patient!.name;
     //   icCon.text = patientProvider.patient!.icNum;
-    print(Provider.of<OrderProvider>(context)
-        .orderService
-        .serviceType
-        .toString());
+    // print(Provider.of<OrderProvider>(context)
+    //     .orderService
+    //     .serviceType
+    //     .toString());
     return Column(
       children: [
         gaphr(h: 110),

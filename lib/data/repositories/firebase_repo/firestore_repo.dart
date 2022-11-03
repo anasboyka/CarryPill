@@ -94,6 +94,10 @@ class FirestoreRepo {
 
   //up rider
 
+  Future getRider(String riderId) async {
+    return await FirestoreProvider().getCurrentRider(riderId);
+  }
+
   Future updateRiderPending(String riderId, String orderId) async {
     return await FirestoreProvider(uid: uid)
         .updateRiderPending(riderId, orderId);
@@ -103,7 +107,15 @@ class FirestoreRepo {
     return await FirestoreProvider(uid: uid).updateRiderWorkingStatus(status);
   }
 
-  Stream<List<Rider>?> streamFindRiderAvailable({bool descending = true}) {
+  Stream<Rider> streamRiderPendingStatus(String riderId) {
+    return FirestoreProvider().getRiderPendingStatus(riderId);
+  }
+
+  Stream<Rider> streamFindRiderAvailable({bool descending = true}) {
+    return FirestoreProvider().getRiderAvailable(descending);
+  }
+
+  Stream<List<Rider>?> streamFindRidersAvailable({bool descending = true}) {
     return FirestoreProvider().getRiderListAvailableStream(descending);
   }
 

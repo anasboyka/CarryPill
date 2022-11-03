@@ -16,6 +16,8 @@ class OrderService {
   String? orderQueryStatus;
   String? patientRef;
   String? riderRef;
+  bool? riderPending;
+  List<String>? riderCancelId;
   DocumentSnapshot? snapshot;
   DocumentReference? reference;
   String? documentID;
@@ -31,6 +33,8 @@ class OrderService {
     this.orderQueryStatus,
     this.patientRef,
     this.riderRef,
+    this.riderPending,
+    this.riderCancelId,
     this.snapshot,
     this.reference,
     this.documentID,
@@ -58,6 +62,9 @@ class OrderService {
       orderQueryStatus: map['orderQueryStatus'],
       patientRef: map['patientRef'],
       riderRef: map['riderRef'],
+      riderCancelId:
+          map['riderCancelId'] != null ? List.from(map['riderCancelId']) : null,
+      riderPending: map['riderPending'],
       snapshot: snapshot,
       reference: snapshot.reference,
       documentID: snapshot.id,
@@ -100,6 +107,8 @@ class OrderService {
         'orderQueryStatus': orderQueryStatus,
         'patientRef': patientRef,
         'riderRef': riderRef,
+        'riderCancelId': riderCancelId,
+        'riderPending': riderPending,
       };
 
   // OrderService copyWith({

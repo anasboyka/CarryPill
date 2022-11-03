@@ -63,7 +63,7 @@ class _ProfileTabState extends State<ProfileTab> {
 
   @override
   Widget build(BuildContext context) {
-    print('build profile tab');
+    // print('build profile tab');
     PatientUid auth = Provider.of<PatientUid>(context);
     // var patientProvider = Provider.of<PatientProvider>(context);
     return Scaffold(
@@ -241,8 +241,8 @@ class _ProfileTabState extends State<ProfileTab> {
                                 return isSameDay(_selectedDay, day);
                               },
                               onDaySelected: (selectedDay, focusedDay) {
-                                print('_selected ${_selectedDay}');
-                                print(' selected${selectedDay}');
+                                // print('_selected ${_selectedDay}');
+                                // print(' selected${selectedDay}');
 
                                 if (!isSameDay(_selectedDay, selectedDay)) {
                                   setState(() {
@@ -351,9 +351,9 @@ class _ProfileTabState extends State<ProfileTab> {
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: MaterialButton(
                       onPressed: () async {
-                        print(clinicList[0].status);
-                        print(clinicList
-                            .every((element) => element.status == false));
+                        // print(clinicList[0].status);
+                        // print(clinicList
+                        //     .every((element) => element.status == false));
                         if (_selectedDay != null &&
                             !clinicList
                                 // !(Provider.of<PatientProvider>(context,
@@ -361,7 +361,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                 //         .patient!
                                 //         .clinicList)
                                 .every((element) => element.status == false)) {
-                          print('here');
+                          // print('here');
                           // clinicList = Provider.of<PatientProvider>(
                           //         context,
                           //         listen: false)

@@ -27,12 +27,12 @@ class FinishedTab extends StatefulWidget {
 }
 
 class _FinishedTabState extends State<FinishedTab> {
-  Rider? rider;
+  Rider? currentRider;
   Widget statusWidget = kwOrderReceivedStatusWidget;
   String textOrange = 'Congratulation!';
   String description = ksorderReceived;
   late Widget cardBottomWidget;
-  StreamSubscription? streamSubscription;
+  StreamSubscription? streamSubscription1, streamSubscription2;
   // Patient patient = Patient(
   //     name: 'name',
   //     icNum: 'icNum',
@@ -47,6 +47,15 @@ class _FinishedTabState extends State<FinishedTab> {
     // TODO: implement initState
     // AuthRepo().register(patient, 'test@gmail.com', '123456');
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    streamSubscription1?.cancel().then((_) => streamSubscription1 = null);
+    streamSubscription2?.cancel().then((_) => streamSubscription2 = null);
+
+    super.dispose();
   }
 
   @override
@@ -86,11 +95,15 @@ class _FinishedTabState extends State<FinishedTab> {
                         if (orderService.orderQueryStatus == null) {
                           await FirestoreRepo().updateOrderQueryStatus(
                               'findingDriver', orderService.documentID!);
+                          if (streamSubscription1 == null) {
+                            streamStartFindRiders(orderService.documentID!);
+                          }
                           setState(() {});
                         }
-                        if (streamSubscription == null) {
-                          streamStartFindRider(orderService.documentID!);
-                        }
+                        // if (streamSubscription1 != null &&
+                        //     streamSubscription1!.isPaused) {
+                        //   streamSubscription1!.resume();
+                        // }
 
                         textOrange = 'Finding you a driver';
                         description = ksorderReceived;
@@ -100,26 +113,33 @@ class _FinishedTabState extends State<FinishedTab> {
                       });
                       break;
                     case StatusOrder.driverFound:
-                      streamSubscription
+                      streamSubscription1
                           ?.cancel()
-                          .then((_) => streamSubscription = null);
+                          .then((_) => streamSubscription1 = null);
+                      streamSubscription2
+                          ?.cancel()
+                          .then((_) => streamSubscription2 = null);
                       textOrange = 'Driver Found!';
                       description = ksorderReceived;
                       statusWidget = driverfoundStatusWidget(
-                          'Mohamed Salah', 'Ysuku', 'DBQ 4021', 4.5);
+                        'Mohamed Salah',
+                        'Ysuku',
+                        'DBQ 4021',
+                        4.5,
+                        orderService.riderRef!,
+                      );
                       cardBottomWidget =
                           deliveryServiceStatusWidget(orderService);
-
                       break;
                     case StatusOrder.driverToHospital:
                       textOrange = 'On it!';
                       description = ksdriverToHospital;
                       statusWidget = kwdriverToHospitalStatusWidget;
-                      cardBottomWidget = driverInfoStatusWidget(
-                          driverInfoWidget(
-                              'Mohamed Salah', 'Ysuku', 'DBQ 4021', 4.5),
-                          orderService,
-                          useraccount.uid);
+                      // cardBottomWidget = driverInfoStatusWidget(
+                      //     driverInfoWidget(
+                      //         'Mohamed Salah', 'Ysuku', 'DBQ 4021', 4.5),
+                      //     orderService,
+                      //     useraccount.uid);
                       break;
                     case StatusOrder.driverQueue:
                       textOrange = 'Queueing';
@@ -194,26 +214,58 @@ class _FinishedTabState extends State<FinishedTab> {
                   //     }
                   //   },
                   // );
-                  return Column(
-                    children: [
-                      gaphr(h: 110),
-                      gaphr(h: 45.5),
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.r),
-                          color: kcWhite,
+                  if (currentRider == null) {
+                    return Column(
+                      children: [
+                        gaphr(h: 110),
+                        gaphr(h: 45.5),
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.r),
+                            color: kcWhite,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.w),
+                            child: orderStatusWidget(
+                                statusWidget, textOrange, description),
+                          ),
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15.w),
-                          child: orderStatusWidget(
-                              statusWidget, textOrange, description),
+                        cardBottomWidget,
+                        gaphr(h: 23),
+                      ],
+                    );
+                  } else {
+                    cardBottomWidget = driverInfoStatusWidget(
+                        driverInfoWidget(
+                          currentRider!.firstName, //'Mohamed Salah',
+                          currentRider!.vehicleType, //'Ysuku',
+                          currentRider!.phoneNum, //'DBQ 4021',
+                          4.5,
                         ),
-                      ),
-                      cardBottomWidget,
-                      gaphr(h: 23),
-                    ],
-                  );
+                        orderService,
+                        useraccount.uid);
+                    return Column(
+                      children: [
+                        gaphr(h: 110),
+                        gaphr(h: 45.5),
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.r),
+                            color: kcWhite,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.w),
+                            child: orderStatusWidget(
+                                statusWidget, textOrange, description),
+                          ),
+                        ),
+                        cardBottomWidget,
+                        gaphr(h: 23),
+                      ],
+                    );
+                  }
                 }),
               ),
             );
@@ -225,30 +277,67 @@ class _FinishedTabState extends State<FinishedTab> {
         });
   }
 
-  streamStartFindRider(String orderId) {
+  Future<bool?> streamCheckRiderPending(String riderId) async {
+    Stream<Rider> streamRider =
+        FirestoreRepo().streamRiderPendingStatus(riderId);
+
+    await for (Rider rider in streamRider) {
+      if (rider.workingStatus == 'isWaitingForOrder') {
+        return false;
+      } else if (rider.workingStatus == 'acceptedOrder') {
+        setState(() {
+          currentRider = rider;
+        });
+        return true;
+      }
+    }
+
+    return null;
+
+    // return streamRider.firstWhere((rider) => rider.workingStatus == '');
+  }
+
+  streamStartFindRiders(String orderId) async {
     Stream<List<Rider>?> streamRiders =
-        FirestoreRepo().streamFindRiderAvailable();
-    streamSubscription = streamRiders.listen((event) async {
-      if (event != null && event.isNotEmpty) {
-        streamSubscription?.pause();
-        for (var i = 0; i < event.length; i++) {
-          Rider rider = event[i];
+        FirestoreRepo().streamFindRidersAvailable();
+    streamSubscription1 = streamRiders.listen((riderList) async {
+      if (riderList != null && riderList.isNotEmpty) {
+        for (var i = 0; i < riderList.length; i++) {
+          Rider rider = riderList[i];
           if (rider.orderCancelId != null) {
             if (rider.orderCancelId!.isNotEmpty &&
                 !rider.orderCancelId!.contains(orderId)) {
+              streamSubscription1?.pause();
               await FirestoreRepo()
                   .updateRiderPending(rider.documentID!, orderId);
-              break;
-            } else {
-              if (streamSubscription!.isPaused) {
-                streamSubscription?.resume();
+              bool result =
+                  await streamCheckRiderPending(rider.documentID!) ?? false;
+              if (result) {
+                print('break');
+                break;
+              } else {
+                print('continue');
+                continue;
               }
+            } else {
+              if (streamSubscription1!.isPaused) {
+                streamSubscription1?.resume();
+              }
+              continue;
             }
-            //progress
           } else {
+            streamSubscription1?.pause();
             await FirestoreRepo()
                 .updateRiderPending(rider.documentID!, orderId);
-            break;
+            bool? result =
+                await streamCheckRiderPending(rider.documentID!) ?? false;
+            if (result) {
+              print('break');
+              break;
+            } else {
+              print('continue');
+              continue;
+            }
           }
         }
       }
@@ -628,13 +717,28 @@ class _FinishedTabState extends State<FinishedTab> {
     );
   }
 
-  Widget driverfoundStatusWidget(
-      String name, String vehicleName, String vehiclePlateNum, double rate) {
+  Widget driverfoundStatusWidget(String name, String vehicleName,
+      String vehiclePlateNum, double rate, String riderId) {
     return Column(
       //crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         gaphr(h: 63.5),
-        driverInfoWidget(name, vehicleName, vehiclePlateNum, rate),
+        FutureBuilder(
+            future: FirestoreRepo().getRider(riderId),
+            builder: (_, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                Rider rider = snapshot.data;
+                return driverInfoWidget(
+                    //TODO LATER
+                    rider.firstName, //name,
+                    rider.vehicleType, //vehicleName,
+                    rider.phoneNum, //vehiclePlateNum,
+                    4.4 //rate,
+                    );
+              } else {
+                return const CircularProgressIndicator.adaptive();
+              }
+            }),
         gaphr(h: 42)
       ],
     );

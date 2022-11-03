@@ -38,7 +38,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
   @override
   void initState() {
     // TODO: implement initState
-    print('init profile info');
+    // print('init profile info');
     Patient? patient = widget.arg!['patient'];
     if (patient != null) {
       // print(patient.name);
@@ -160,7 +160,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
                     } else {
                       var addresses =
                           await locationFromAddress(addresscon.text);
-                      print(addresses.first);
+                      // print(addresses.first);
                       var address = addresses.first;
                       geo = GeoPoint(address.latitude, address.longitude);
                     }

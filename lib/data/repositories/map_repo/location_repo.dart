@@ -52,7 +52,7 @@ class LocationRepo {
 
     // if (Platform.isAndroid) {
     LocationPermission permission = await LocationProvider().checkPermission();
-    print('checkpermission');
+    // print('checkpermission');
     if (permission == LocationPermission.denied) {
       permission = await GeolocatorPlatform.instance
           .requestPermission(); //await LocationProvider().requestPermission();

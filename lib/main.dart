@@ -3,6 +3,7 @@ import 'package:carrypill/business_logic/provider/patient_provider.dart';
 import 'package:carrypill/business_logic/provider/provider_location.dart';
 import 'package:carrypill/data/models/order_service.dart';
 import 'package:carrypill/data/models/patient_uid.dart';
+import 'package:carrypill/data/models/rider.dart';
 import 'package:carrypill/data/repositories/firebase_repo/auth_repo.dart';
 import 'package:carrypill/data/repositories/map_repo/location_repo.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,7 +23,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   Position? position = await LocationRepo().initPosition();
-  print(position);
+  // print(position);
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<ProviderLocation>.value(
       value: ProviderLocation(position: position),

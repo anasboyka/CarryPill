@@ -308,8 +308,8 @@ class _PaymentTabState extends State<PaymentTab> {
                     Provider.of<OrderProvider>(context, listen: false)
                         .setOrderStatus(StatusOrder.findingDriver);
 
-                    print(Provider.of<OrderProvider>(context, listen: false)
-                        .orderService);
+                    // print(Provider.of<OrderProvider>(context, listen: false)
+                    //     .orderService);
                     OrderService orderService =
                         Provider.of<OrderProvider>(context, listen: false)
                             .orderService;
@@ -341,6 +341,6 @@ class _PaymentTabState extends State<PaymentTab> {
     setState(() {
       currentIndex = index;
     });
-    print(index);
+    // print(index);
   }
 }
