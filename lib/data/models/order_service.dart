@@ -2,7 +2,6 @@ import 'package:carrypill/data/models/clinic.dart';
 import 'package:carrypill/data/models/all_enum.dart';
 import 'package:carrypill/data/models/facility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 class OrderService {
   //List<Clinic> clinicList;
@@ -16,14 +15,16 @@ class OrderService {
   String? orderQueryStatus;
   String? patientRef;
   String? riderRef;
-  bool? riderPending;
   List<String>? riderCancelId;
+  bool? riderPending;
+  int? tokenNum;
   DocumentSnapshot? snapshot;
   DocumentReference? reference;
   String? documentID;
 
   OrderService({
     //required this.clinicList,
+    this.facility,
     this.statusOrder = StatusOrder.noOrder,
     this.serviceType,
     this.paymentMethod,
@@ -33,8 +34,9 @@ class OrderService {
     this.orderQueryStatus,
     this.patientRef,
     this.riderRef,
-    this.riderPending,
     this.riderCancelId,
+    this.riderPending,
+    this.tokenNum,
     this.snapshot,
     this.reference,
     this.documentID,
@@ -47,6 +49,8 @@ class OrderService {
     return OrderService(
       // clinicList:
       //     map['clinicList'] != null ? List<Clinic>.from(map['clinicList']) : [],
+      facility:
+          map['facility'] != null ? Facility.fromMap(map['facility']) : null,
       statusOrder: map['statusOrder'] != null
           ? StatusOrder.values.byName(map['statusOrder'])
           : StatusOrder.noOrder,
@@ -65,6 +69,8 @@ class OrderService {
       riderCancelId:
           map['riderCancelId'] != null ? List.from(map['riderCancelId']) : null,
       riderPending: map['riderPending'],
+      // appointment: map['appointment']?.toDate(),
+      tokenNum: map['tokenNum'],
       snapshot: snapshot,
       reference: snapshot.reference,
       documentID: snapshot.id,
@@ -78,6 +84,8 @@ class OrderService {
       //         .map<Clinic>((mapString) => Clinic.fromMap(mapString))
       //         .toList()
       //     : [],
+      facility:
+          map['facility'] != null ? Facility.fromMap(map['facility']) : null,
       statusOrder: map['statusOrder'] != null
           ? StatusOrder.values.byName(map['statusOrder'])
           : StatusOrder.noOrder,
@@ -90,25 +98,28 @@ class OrderService {
       totalPay: map['totalPay'],
       orderDate: (map['orderDate']?.toDate()),
       orderDateComplete: map['orderDateComplete']?.toDate(),
-      orderQueryStatus: map['orderQueryStatus'],
       patientRef: map['patientRef'],
-      riderRef: map['riderRef'],
+      // appointment: map['appointment']?.toDate(),
+      riderCancelId:
+          map['riderCancelId'] != null ? List.from(map['riderCancelId']) : null,
+      tokenNum: map['tokenNum'],
     );
   }
 
   Map<String, dynamic> toMap() => {
         // 'clinicList': clinicList.map((e) => e.toMap()).toList(),
+        'facility': facility != null ? facility!.toMap() : null,
         'statusOrder': statusOrder.name,
         'serviceType': serviceType?.name,
         'paymentMethod': paymentMethod?.name,
         'totalPay': totalPay,
         'orderDate': orderDate,
         'orderDateComplete': orderDateComplete,
-        'orderQueryStatus': orderQueryStatus,
         'patientRef': patientRef,
-        'riderRef': riderRef,
         'riderCancelId': riderCancelId,
         'riderPending': riderPending,
+        // 'appointment': appointment,
+        'tokenNum': tokenNum,
       };
 
   // OrderService copyWith({

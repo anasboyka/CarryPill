@@ -51,6 +51,7 @@ dependencies:
   url_launcher: ^6.1.0
   geolocator: any
   geocoding: any
+  geocoder: ^0.2.1
   google_maps_flutter: any
   # permission_handler: ^9.2.0
 

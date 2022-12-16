@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
 import 'constant_color.dart';
@@ -100,6 +101,31 @@ const kwDivider = Divider(
 );
 
 const kwInset0 = EdgeInsets.zero;
+
+//String
+String dateformat(DateTime date, {String format = 'dd-MM-yyyy'}) {
+  return DateFormat(format).format(date);
+}
+
+String dateformatText(DateTime date) {
+  return DateFormat('d MMMM, yyyy').format(date);
+}
+
+String dateformatNumSlashI(DateTime date) {
+  return DateFormat('dd/MM/yyyy').format(date);
+}
+
+String dateformatNumSlashD(DateTime date) {
+  return DateFormat('yy/MM/dddd').format(date);
+}
+
+String dateformatNumDashI(DateTime date) {
+  return DateFormat('dd-MM-yyyy').format(date);
+}
+
+String dateformatNumDashD(DateTime date) {
+  return DateFormat('yy-MM-dddd').format(date);
+}
 
 TextStyle kwtextStyleRD(
     {double fs = 12,

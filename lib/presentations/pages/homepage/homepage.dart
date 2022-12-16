@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           HomeTab(patient: widget.patient),
           const OrderTab(),
-          const CartTab(),
+          // const CartTab(),
           ProfileTab(patient: widget.patient),
         ],
         index: currentIndex,
@@ -126,14 +126,14 @@ class _HomePageState extends State<HomePage> {
                     'assets/icons/order_icon_filled.png',
                     'assets/icons/order_icon.png',
                   ),
+                  // iconTabButton(
+                  //   2,
+                  //   'Cart',
+                  //   'assets/icons/cart_icon_filled.png',
+                  //   'assets/icons/cart_icon.png',
+                  // ),
                   iconTabButton(
-                    2,
-                    'Cart',
-                    'assets/icons/cart_icon_filled.png',
-                    'assets/icons/cart_icon.png',
-                  ),
-                  iconTabButton(
-                    3,
+                    2, //3,
                     'Profile',
                     'assets/icons/profile_icon_filled.png',
                     'assets/icons/profile_icon.png',

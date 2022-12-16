@@ -2,6 +2,7 @@ import 'package:carrypill/business_logic/provider/order_provider.dart';
 import 'package:carrypill/business_logic/provider/patient_provider.dart';
 import 'package:carrypill/constants/constant_color.dart';
 import 'package:carrypill/constants/constant_widget.dart';
+import 'package:carrypill/data/models/all_enum.dart';
 import 'package:carrypill/data/models/clinic.dart';
 import 'package:carrypill/data/models/facility.dart';
 import 'package:carrypill/data/models/order_service.dart';
@@ -367,6 +368,9 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                       !clinicList.every((element) => element.status == false) &&
                       _selectedDay != null &&
                       facility != null) {
+                    OrderService orderService =
+                        Provider.of<OrderProvider>(context, listen: false)
+                            .orderService;
                     GeoPoint geoAddress;
                     GeoPoint geoFacility;
                     double totalPay;
@@ -391,8 +395,11 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
 
                     geoFacility = GeoPoint(facility!.geoPoint.latitude,
                         facility!.geoPoint.longitude);
-                    totalPay = LocationRepo()
-                        .calculateDeliveryCharge(geoAddress, geoFacility);
+                    totalPay = orderService.serviceType ==
+                            ServiceType.requestDelivery
+                        ? LocationRepo()
+                            .calculateDeliveryCharge(geoAddress, geoFacility)
+                        : LocationRepo().calculatePickupCharge();
                     Patient patient = Patient(
                       name: fullNameCon.text,
                       icNum: icCon.text,

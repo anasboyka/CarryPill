@@ -44,6 +44,11 @@ class LocationRepo {
     return charge;
   }
 
+  double calculatePickupCharge() {
+    double charge = 10;
+    return charge;
+  }
+
   Future<dynamic> _handlePermission() async {
     bool serviceEnabled = await LocationProvider().locationServiceStatus();
     if (!serviceEnabled) {

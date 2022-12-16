@@ -3,7 +3,7 @@ import 'package:carrypill/presentations/pages/authenticate/authenticate.dart';
 import 'package:carrypill/presentations/pages/homepage/tabs/subprofile/profile_info.dart';
 
 import 'presentations/pages/homepage/homepage.dart';
-import 'presentations/pages/homepage/tabs/subhome/request_delivery.dart';
+import 'presentations/pages/homepage/tabs/subhome/request_service.dart';
 import 'presentations/pages/wrapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,7 @@ class RouteGenerator {
     switch (settings.name) {
       case '/':
         return CupertinoPageRoute(builder: (_) => Wrapper());
-      case '/requestdelivery':
+      case '/requestservice':
         return CupertinoPageRoute(builder: (_) => const RequestDelivery());
       case '/profileinfo':
         return CupertinoPageRoute(

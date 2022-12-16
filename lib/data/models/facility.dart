@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Facility {
   final String facilityName;
   final GeoPoint geoPoint;
+  final String fullAddress;
   final DocumentSnapshot? snapshot;
   final DocumentReference? reference;
   final String? documentID;
@@ -10,6 +11,7 @@ class Facility {
   Facility({
     required this.facilityName,
     required this.geoPoint,
+    required this.fullAddress,
     this.snapshot,
     this.reference,
     this.documentID,
@@ -22,6 +24,7 @@ class Facility {
     return Facility(
       facilityName: map['facilityName'],
       geoPoint: map['geoPoint'],
+      fullAddress: map['fullAddress'],
       snapshot: snapshot,
       reference: snapshot.reference,
       documentID: snapshot.id,
@@ -34,22 +37,25 @@ class Facility {
     return Facility(
       facilityName: map['facilityName'],
       geoPoint: map['geoPoint'],
+      fullAddress: map['fullAddress'],
     );
   }
 
   Map<String, dynamic> toMap() => {
         'facilityName': facilityName,
         'geoPoint': geoPoint,
+        'fullAddress': fullAddress,
       };
 
   Facility copyWith({
-    String? name,
+    String? facilityName,
     GeoPoint? geoPoint,
+    String? fullAddress,
   }) {
     return Facility(
-      facilityName: name ?? this.facilityName,
-      geoPoint: geoPoint ?? this.geoPoint,
-    );
+        facilityName: facilityName ?? this.facilityName,
+        geoPoint: geoPoint ?? this.geoPoint,
+        fullAddress: fullAddress ?? this.fullAddress);
   }
 
   @override

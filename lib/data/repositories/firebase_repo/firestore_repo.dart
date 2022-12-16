@@ -98,6 +98,10 @@ class FirestoreRepo {
     return await FirestoreProvider().getCurrentRider(riderId);
   }
 
+  Stream<Rider?> getRiderStream(String riderId) {
+    return FirestoreProvider().getCurrentRiderStream(riderId);
+  }
+
   Future updateRiderPending(String riderId, String orderId) async {
     return await FirestoreProvider(uid: uid)
         .updateRiderPending(riderId, orderId);

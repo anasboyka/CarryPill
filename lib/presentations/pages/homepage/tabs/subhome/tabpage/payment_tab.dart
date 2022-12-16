@@ -14,8 +14,8 @@ import 'package:provider/provider.dart';
 
 class PaymentTab extends StatefulWidget {
   final void Function(int index) changePage;
-  OrderService? orderService;
-  PaymentTab({Key? key, required this.changePage, this.orderService})
+  final OrderService? orderService;
+  const PaymentTab({Key? key, required this.changePage, this.orderService})
       : super(key: key);
 
   @override
@@ -102,9 +102,12 @@ class _PaymentTabState extends State<PaymentTab> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8.r),
                                   color: kcServiceBg,
-                                  image: const DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/request_delivery.png'),
+                                  image: DecorationImage(
+                                    image: AssetImage(orderProvider
+                                                .orderService.serviceType ==
+                                            ServiceType.requestDelivery
+                                        ? 'assets/images/request_delivery.png'
+                                        : 'assets/images/request_pickup.png'),
                                   ),
                                 ),
                               ),
@@ -116,7 +119,10 @@ class _PaymentTabState extends State<PaymentTab> {
                                   //     MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text(
-                                      'Delivery',
+                                      orderProvider.orderService.serviceType ==
+                                              ServiceType.requestDelivery
+                                          ? 'Delivery'
+                                          : 'Pickup',
                                       style: kwtextStyleRD(
                                         c: kctextTitle,
                                         fs: 15,
@@ -242,14 +248,14 @@ class _PaymentTabState extends State<PaymentTab> {
                           fw: FontWeight.w600,
                         ),
                       ),
-                      Text(
-                        'Add new method',
-                        style: kwtextStyleRD(
-                          c: kcOrange,
-                          fs: 15,
-                          fw: FontWeight.w500,
-                        ),
-                      ),
+                      // Text(
+                      //   'Add new method',
+                      //   style: kwtextStyleRD(
+                      //     c: kcOrange,
+                      //     fs: 15,
+                      //     fw: FontWeight.w500,
+                      //   ),
+                      // ),
                     ],
                   ),
                   gaphr(h: 15),
