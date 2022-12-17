@@ -623,7 +623,9 @@ class _FinishedTabState extends State<FinishedTab> {
                             )
                           ],
                         ),
-                        onPressed: () {}),
+                        onPressed: () async {
+                          //todo call rider
+                        }),
                   ),
                   gapwr(w: 10),
                   Expanded(
