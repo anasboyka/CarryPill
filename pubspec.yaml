@@ -53,6 +53,7 @@ dependencies:
   geocoding: any
   geocoder: ^0.2.1
   google_maps_flutter: any
+  flutter_phone_direct_caller: ^2.1.1
   # permission_handler: ^9.2.0
 
 dev_dependencies:

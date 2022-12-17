@@ -193,44 +193,52 @@ class _HomeTabState extends State<HomeTab> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: MaterialButton(
-                          elevation: 1,
-                          color: kcWhite,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.r),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: 320.h,
                           ),
-                          onPressed: () {
-                            Provider.of<OrderProvider>(context, listen: false)
-                                .setServiceType(ServiceType.requestPickup);
-                            Provider.of<OrderProvider>(context, listen: false)
-                                .setPatientRef(patientuid!.uid);
-                            Navigator.of(context).pushNamed('/requestservice');
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              gaphr(h: 25),
-                              Image.asset(
-                                'assets/images/request_pickup.png',
-                                height: 122.h,
-                              ),
-                              gaphr(h: 3),
-                              Text(
-                                'Request\nPickup',
-                                style: kwtextStyleRD(
-                                  fs: 30,
-                                  c: kcPrimary,
+                          child: MaterialButton(
+                            elevation: 1,
+                            color: kcWhite,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.r),
+                            ),
+                            onPressed: () {
+                              Provider.of<OrderProvider>(context, listen: false)
+                                  .setServiceType(ServiceType.requestPickup);
+                              Provider.of<OrderProvider>(context, listen: false)
+                                  .setPatientRef(patientuid!.uid);
+                              Navigator.of(context)
+                                  .pushNamed('/requestservice');
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                gaphr(h: 25),
+                                Image.asset(
+                                  'assets/images/request_pickup.png',
+                                  height: 122.h,
                                 ),
-                                textAlign: TextAlign.left,
-                              ),
-                              Text(
-                                ksrequesPickupDetail,
-                                style: kwtextStyleRD(
-                                    fs: 13, c: kcRequestPickupDescrp, h: 1.15),
-                                textAlign: TextAlign.left,
-                              ),
-                              gaphr(h: 7)
-                            ],
+                                gaphr(h: 3),
+                                Text(
+                                  'Request\nPickup',
+                                  style: kwtextStyleRD(
+                                    fs: 30,
+                                    c: kcPrimary,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                Text(
+                                  ksrequesPickupDetail,
+                                  style: kwtextStyleRD(
+                                      fs: 13,
+                                      c: kcRequestPickupDescrp,
+                                      h: 1.15),
+                                  textAlign: TextAlign.left,
+                                ),
+                                gaphr(h: 7)
+                              ],
+                            ),
                           ),
                         ),
                         // child: InkWell(
@@ -287,45 +295,53 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                       gapwr(w: 10),
                       Expanded(
-                        child: MaterialButton(
-                          elevation: 1,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.r),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: 320.h,
                           ),
-                          color: kcWhite,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              gaphr(h: 25),
-                              Image.asset(
-                                'assets/images/request_delivery.png',
-                                height: 122.h,
-                              ),
-                              gaphr(h: 3),
-                              Text(
-                                'Request\nDelivery',
-                                style: kwtextStyleRD(
-                                  fs: 30,
-                                  c: kcPrimary,
+                          child: MaterialButton(
+                            elevation: 1,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.r),
+                            ),
+                            color: kcWhite,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                gaphr(h: 25),
+                                Image.asset(
+                                  'assets/images/request_delivery.png',
+                                  height: 122.h,
                                 ),
-                                textAlign: TextAlign.left,
-                              ),
-                              Text(
-                                ksrequesDelivery,
-                                style: kwtextStyleRD(
-                                    fs: 13, c: kcRequestPickupDescrp, h: 1.15),
-                                textAlign: TextAlign.left,
-                              ),
-                              gaphr(h: 7)
-                            ],
+                                gaphr(h: 3),
+                                Text(
+                                  'Request\nDelivery',
+                                  style: kwtextStyleRD(
+                                    fs: 30,
+                                    c: kcPrimary,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                Text(
+                                  ksrequesDelivery,
+                                  style: kwtextStyleRD(
+                                      fs: 13,
+                                      c: kcRequestPickupDescrp,
+                                      h: 1.15),
+                                  textAlign: TextAlign.left,
+                                ),
+                                gaphr(h: 7)
+                              ],
+                            ),
+                            onPressed: () {
+                              Provider.of<OrderProvider>(context, listen: false)
+                                  .setServiceType(ServiceType.requestDelivery);
+                              Provider.of<OrderProvider>(context, listen: false)
+                                  .setPatientRef(patientuid!.uid);
+                              Navigator.of(context)
+                                  .pushNamed('/requestservice');
+                            },
                           ),
-                          onPressed: () {
-                            Provider.of<OrderProvider>(context, listen: false)
-                                .setServiceType(ServiceType.requestDelivery);
-                            Provider.of<OrderProvider>(context, listen: false)
-                                .setPatientRef(patientuid!.uid);
-                            Navigator.of(context).pushNamed('/requestservice');
-                          },
                         ),
                         // child: InkWell(
                         //   borderRadius: BorderRadius.circular(25.r),
