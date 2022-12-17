@@ -71,7 +71,11 @@ class AuthProvider {
         case "invalid-email":
           return "Email address is invalid.";
         default:
-          return "Register failed. Please try again.";
+          print(e);
+          print(e.message);
+          print(e.stackTrace);
+
+          return "Sign In failed. Please try again.";
       }
     } catch (e) {
       print(e.toString());

@@ -1,6 +1,7 @@
 import 'package:carrypill/business_logic/provider/patient_provider.dart';
 import 'package:carrypill/data/models/patient.dart';
 import 'package:carrypill/data/models/patient_uid.dart';
+import 'package:carrypill/data/repositories/firebase_repo/auth_repo.dart';
 import 'package:carrypill/data/repositories/firebase_repo/firestore_repo.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,7 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final patientuid = Provider.of<PatientUid?>(context);
     if (patientuid != null) {
+      //AuthRepo().logout();
       return StreamBuilder(
           stream: FirestoreRepo(uid: patientuid.uid).streamPatient,
           builder: (context, AsyncSnapshot snapshot) {
