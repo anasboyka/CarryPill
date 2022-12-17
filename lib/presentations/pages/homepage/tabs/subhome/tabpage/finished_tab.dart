@@ -15,9 +15,11 @@ import 'package:carrypill/presentations/custom_widgets/dash_line.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FinishedTab extends StatefulWidget {
   const FinishedTab({Key? key}) : super(key: key);
@@ -94,7 +96,7 @@ class _FinishedTabState extends State<FinishedTab> {
                     }
                     return Column(
                       children: [
-                        gaphr(h: 155.5),
+                        gaphr(h: 120),
                         Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
@@ -324,7 +326,7 @@ class _FinishedTabState extends State<FinishedTab> {
                           }
                           return Column(
                             children: [
-                              gaphr(h: 155.5),
+                              gaphr(h: 120),
                               Container(
                                 width: double.infinity,
                                 decoration: BoxDecoration(
@@ -518,20 +520,20 @@ class _FinishedTabState extends State<FinishedTab> {
                         fw: FontWeight.w600,
                       ),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: kccontainerPink,
-                          borderRadius: BorderRadius.circular(10.r)),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 7.w, vertical: 1.h),
-                        child: Text(
-                          'AHD001D',
-                          style: kwtextStyleRD(fs: 15, c: kctextpurplepink),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                    )
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //       color: kccontainerPink,
+                    //       borderRadius: BorderRadius.circular(10.r)),
+                    //   child: Padding(
+                    //     padding: EdgeInsets.symmetric(
+                    //         horizontal: 7.w, vertical: 1.h),
+                    //     child: Text(
+                    //       'AHD001D',
+                    //       style: kwtextStyleRD(fs: 15, c: kctextpurplepink),
+                    //       textAlign: TextAlign.left,
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ),
                 gaphr(h: 12),
@@ -625,6 +627,24 @@ class _FinishedTabState extends State<FinishedTab> {
                         ),
                         onPressed: () async {
                           //todo call rider
+                          print('here');
+                          // final callLaunchUrl = Uri.parse('tel:+60175970081');
+                          final Uri callLaunchUrl = Uri(
+                            scheme: 'tel',
+                            path: '+60175970081',
+                          );
+                          try {
+                            // if (await canLaunchUrl(callLaunchUrl)) {
+                            await launchUrl(callLaunchUrl);
+                            // } else {
+                            //print('error');
+                            // }
+                          } on Exception catch (e) {
+                            // TODO
+                            print(e);
+                          }
+                          // await FlutterPhoneDirectCaller.callNumber(
+                          //     '+60175970081');
                         }),
                   ),
                   gapwr(w: 10),
@@ -649,7 +669,18 @@ class _FinishedTabState extends State<FinishedTab> {
                             )
                           ],
                         ),
-                        onPressed: () {}),
+                        onPressed: () async {
+                          final Uri smsLaunchUri = Uri(
+                            scheme: 'sms',
+                            path: '+60175970081',
+                            queryParameters: <String, String>{
+                              'body': Uri.encodeComponent('hello'),
+                            },
+                          );
+                          if (await canLaunchUrl(smsLaunchUri)) {
+                            await launchUrl(smsLaunchUri);
+                          }
+                        }),
                   )
                 ],
               ),
