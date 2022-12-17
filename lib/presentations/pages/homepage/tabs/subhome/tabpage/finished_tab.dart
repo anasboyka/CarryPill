@@ -237,60 +237,68 @@ class _FinishedTabState extends State<FinishedTab> {
                               description = ksdriverToHospital;
                               statusWidget = kwdriverToHospitalStatusWidget;
                               cardBottomWidget = driverInfoStatusWidget(
-                                  driverInfoWidget(
-                                    rider,
-                                    // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
-                                    // rider.vehicleType, //'Ysuku',
-                                    // rider.phoneNum, //'DBQ 4021',
-                                    // 4.5,
-                                  ),
-                                  orderService,
-                                  useraccount.uid);
+                                driverInfoWidget(
+                                  rider,
+                                  // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
+                                  // rider.vehicleType, //'Ysuku',
+                                  // rider.phoneNum, //'DBQ 4021',
+                                  // 4.5,
+                                ),
+                                orderService,
+                                useraccount.uid,
+                                rider,
+                              );
                               break;
                             case StatusOrder.driverQueue:
                               textOrange = 'Queueing';
                               description = ksdriverQueue;
                               statusWidget = kwdriverQueueStatusWidget;
                               cardBottomWidget = driverInfoStatusWidget(
-                                  driverInfoWidget(
-                                    rider,
-                                    // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
-                                    // rider.vehicleType, //'Ysuku',
-                                    // rider.phoneNum, //'DBQ 4021',
-                                    // 4.5,
-                                  ),
-                                  orderService,
-                                  useraccount.uid);
+                                driverInfoWidget(
+                                  rider,
+                                  // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
+                                  // rider.vehicleType, //'Ysuku',
+                                  // rider.phoneNum, //'DBQ 4021',
+                                  // 4.5,
+                                ),
+                                orderService,
+                                useraccount.uid,
+                                rider,
+                              );
                               break;
                             case StatusOrder.orderPreparing:
                               textOrange = 'Order Preparing';
                               description = ksorderPreparing;
                               statusWidget = kworderPreparingStatusWidget;
                               cardBottomWidget = driverInfoStatusWidget(
-                                  driverInfoWidget(
-                                    rider,
-                                    // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
-                                    // rider.vehicleType, //'Ysuku',
-                                    // rider.phoneNum, //'DBQ 4021',
-                                    // 4.5,
-                                  ),
-                                  orderService,
-                                  useraccount.uid);
+                                driverInfoWidget(
+                                  rider,
+                                  // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
+                                  // rider.vehicleType, //'Ysuku',
+                                  // rider.phoneNum, //'DBQ 4021',
+                                  // 4.5,
+                                ),
+                                orderService,
+                                useraccount.uid,
+                                rider,
+                              );
                               break;
                             case StatusOrder.outForDelivery:
                               textOrange = 'Out for Delivery!';
                               description = ksoutForDelivery;
                               statusWidget = kwOutForDeliveryStatusWidget;
                               cardBottomWidget = driverInfoStatusWidget(
-                                  driverInfoWidget(
-                                    rider,
-                                    // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
-                                    // rider.vehicleType, //'Ysuku',
-                                    // rider.phoneNum, //'DBQ 4021',
-                                    // 4.5,
-                                  ),
-                                  orderService,
-                                  useraccount.uid);
+                                driverInfoWidget(
+                                  rider,
+                                  // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
+                                  // rider.vehicleType, //'Ysuku',
+                                  // rider.phoneNum, //'DBQ 4021',
+                                  // 4.5,
+                                ),
+                                orderService,
+                                useraccount.uid,
+                                rider,
+                              );
                               break;
                             case StatusOrder.orderArrived:
                               textOrange = orderService.serviceType ==
@@ -314,6 +322,7 @@ class _FinishedTabState extends State<FinishedTab> {
                                   ),
                                   orderService,
                                   useraccount.uid,
+                                  rider,
                                   arrived: true);
                               break;
                             default:
@@ -487,8 +496,8 @@ class _FinishedTabState extends State<FinishedTab> {
     });
   }
 
-  Widget driverInfoStatusWidget(
-      Widget driverInfo, OrderService orderService, String patientUid,
+  Widget driverInfoStatusWidget(Widget driverInfo, OrderService orderService,
+      String patientUid, Rider rider,
       {bool arrived = false}) {
     return Column(
       children: [
@@ -631,7 +640,8 @@ class _FinishedTabState extends State<FinishedTab> {
                           // final callLaunchUrl = Uri.parse('tel:+60175970081');
                           final Uri callLaunchUrl = Uri(
                             scheme: 'tel',
-                            path: '+60175970081',
+                            path: rider.phoneNum,
+                            //path: '+60175970081',
                           );
                           try {
                             // if (await canLaunchUrl(callLaunchUrl)) {
@@ -672,7 +682,8 @@ class _FinishedTabState extends State<FinishedTab> {
                         onPressed: () async {
                           final Uri smsLaunchUri = Uri(
                             scheme: 'sms',
-                            path: '+60175970081',
+                            path: rider.phoneNum,
+                            //path: '+60175970081',
                             queryParameters: <String, String>{
                               'body': Uri.encodeComponent('hello'),
                             },
