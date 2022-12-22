@@ -1,16 +1,21 @@
+import 'dart:io';
+
 import 'package:carrypill/business_logic/provider/patient_provider.dart';
 import 'package:carrypill/constants/constant_color.dart';
 import 'package:carrypill/constants/constant_widget.dart';
 import 'package:carrypill/data/models/patient.dart';
 import 'package:carrypill/data/models/patient_uid.dart';
 import 'package:carrypill/data/repositories/firebase_repo/firestore_repo.dart';
+import 'package:carrypill/data/repositories/firebase_repo/storage_repo.dart';
 import 'package:carrypill/data/repositories/map_repo/location_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
+import 'package:image/image.dart' as img;
 
 class ProfileInfo extends StatefulWidget {
   Map<String, dynamic>? arg = {};
@@ -34,6 +39,8 @@ class _ProfileInfoState extends State<ProfileInfo> {
   FocusNode nodeaddress = FocusNode();
 
   List<bool> enabled = List.filled(5, false);
+  String? filePath, fileName;
+  File? file;
 
   @override
   void initState() {
@@ -59,7 +66,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
   Widget build(BuildContext context) {
     PatientUid useraccount = Provider.of<PatientUid>(context);
     // var patientprovider = Provider.of<PatientProvider>(context);
-
+    Patient? patient = widget.arg!['patient'];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile Info'),
@@ -76,30 +83,79 @@ class _ProfileInfoState extends State<ProfileInfo> {
                 child: Stack(
                   children: [
                     Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(0.0, 1.0), //(x,y)
-                            blurRadius: 2.0,
-                          ),
-                        ],
-                      ),
-                      child: Image.asset(
-                        'assets/images/profile.png',
-                        height: 115,
-                      ),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(0.0, 1.0), //(x,y)
+                              blurRadius: 2.0,
+                            ),
+                          ],
+                          image: DecorationImage(
+                              image: patient?.profileImageUrl != null &&
+                                      file == null
+                                  ? NetworkImage(patient!.profileImageUrl!)
+                                  : file != null
+                                      ? FileImage(file!)
+                                      : const AssetImage(
+                                              'assets/images/profile.png')
+                                          as ImageProvider)),
+                      // child: file != null
+                      //     ? Image.file(file!)
+                      //     : Image.asset(
+                      //         'assets/images/profile.png',
+                      //         height: 115,
+                      //       ),
                     ),
                     Positioned(
-                      bottom: 10,
+                      bottom: 0,
                       right: 0,
                       child: Material(
                         clipBehavior: Clip.hardEdge,
                         color: Colors.transparent,
                         elevation: 0,
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () async {
+                            final results = await FilePicker.platform.pickFiles(
+                              allowMultiple: false,
+                              type: FileType.custom,
+                              allowedExtensions: ['jpg', 'png', 'jpeg'],
+                              // allowCompression: true,
+                            );
+
+                            if (results != null) {
+                              // final path = results.path;
+                              final path = results.files.single.path!;
+                              File pickedfile = File(path);
+                              Image(image: FileImage(pickedfile))
+                                  .image
+                                  .resolve(const ImageConfiguration())
+                                  .addListener(
+                                ImageStreamListener(
+                                  (ImageInfo info, bool syncCall) {
+                                    int width = info.image.width;
+                                    int height = info.image.height;
+                                    print(width);
+                                    print(height);
+                                  },
+                                ),
+                              );
+                              final img.Image? image = img
+                                  .decodeImage(await File(path).readAsBytes());
+                              final img.Image orientedImage =
+                                  img.bakeOrientation(image!);
+                              File newfile = await File(path)
+                                  .writeAsBytes(img.encodeJpg(orientedImage));
+
+                              setState(() {
+                                file = newfile;
+                                filePath = path;
+                                //fileName = results.name;
+                                fileName = results.files.single.name;
+                              });
+                            }
+                          },
                           borderRadius: BorderRadius.circular(50),
                           splashColor: Colors.grey.shade300.withOpacity(0.8),
                           highlightColor: Colors.grey.shade800.withOpacity(0.2),
@@ -146,12 +202,6 @@ class _ProfileInfoState extends State<ProfileInfo> {
               gaphr(h: 30),
               MaterialButton(
                 onPressed: () async {
-                  // Patient patient = Patient(
-                  //     name: namecon.text,
-                  //     icNum: icNumcon.text,
-                  //     phoneNum: phoneNumcon.text,
-                  //     address: addresscon.text,
-                  //     patientId: patientIdcon.text);
                   try {
                     GeoPoint geo;
                     if (addresscon.text.isEmpty) {
@@ -164,14 +214,21 @@ class _ProfileInfoState extends State<ProfileInfo> {
                       var address = addresses.first;
                       geo = GeoPoint(address.latitude, address.longitude);
                     }
+
+                    final String? url = await StorageRepo(uid: useraccount.uid)
+                        .uploadPatientProfileImage(filePath!, fileName!);
+                    // print(url);
+
                     Provider.of<PatientProvider>(context, listen: false)
                         .updatePatientInfo(
-                            name: namecon.text,
-                            icNum: icNumcon.text,
-                            phoneNum: phoneNumcon.text,
-                            address: addresscon.text,
-                            patientId: patientIdcon.text,
-                            geoPoint: geo);
+                      name: namecon.text,
+                      icNum: icNumcon.text,
+                      phoneNum: phoneNumcon.text,
+                      address: addresscon.text,
+                      patientId: patientIdcon.text,
+                      geoPoint: geo,
+                      profileImageUrl: url,
+                    );
                     //GeoPoint geoPoint = GeoPoint(pos.latitude, pos.longitude);
                     await FirestoreRepo(uid: useraccount.uid).updatePatientInfo(
                       name: namecon.text,
@@ -180,6 +237,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
                       address: addresscon.text,
                       patientId: patientIdcon.text,
                       geoPoint: geo,
+                      profileImageUrl: url,
                     );
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(

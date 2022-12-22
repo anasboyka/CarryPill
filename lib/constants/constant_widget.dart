@@ -188,6 +188,36 @@ Divider divider({Color c = kcDivider, double t = 1}) {
   );
 }
 
+EdgeInsetsGeometry padSymR({double h = 20, double v = 0}) {
+  return EdgeInsets.symmetric(horizontal: h.w, vertical: v.h);
+}
+
+EdgeInsetsGeometry padSym({h = 20, v = 0}) {
+  return EdgeInsets.symmetric(horizontal: h, vertical: v);
+}
+
+EdgeInsetsGeometry padOnlyR({
+  double l = 0,
+  double t = 0,
+  double r = 0,
+  double b = 0,
+}) {
+  return EdgeInsets.only(left: l.w, top: t.h, right: r.w, bottom: b.h);
+}
+
+EdgeInsetsGeometry padOnly({
+  double l = 0,
+  double t = 0,
+  double r = 0,
+  double b = 0,
+}) {
+  return EdgeInsets.only(left: l, top: t, right: r, bottom: b);
+}
+
+BorderRadius borderRadiuscR({double r = 10}) {
+  return BorderRadius.circular(r.r);
+}
+
 RoundedRectangleBorder cornerR({double r = 10}) {
   return RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(r.r),
@@ -340,3 +370,17 @@ Widget kworderArrivedStatusWidget = Column(
     ),
   ],
 );
+Widget kworderFinishedStatusWidget(String imageUrl) {
+  return Column(
+    children: [
+      gaphr(h: 9.5),
+      SizedBox(
+        height: 150.h,
+        child: Image.network(
+          imageUrl,
+          fit: BoxFit.cover,
+        ),
+      ),
+    ],
+  );
+}

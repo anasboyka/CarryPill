@@ -18,6 +18,7 @@ class OrderService {
   List<String>? riderCancelId;
   bool? riderPending;
   int? tokenNum;
+  String? tokenUrlImage;
   DocumentSnapshot? snapshot;
   DocumentReference? reference;
   String? documentID;
@@ -37,6 +38,7 @@ class OrderService {
     this.riderCancelId,
     this.riderPending,
     this.tokenNum,
+    this.tokenUrlImage,
     this.snapshot,
     this.reference,
     this.documentID,
@@ -71,6 +73,7 @@ class OrderService {
       riderPending: map['riderPending'],
       // appointment: map['appointment']?.toDate(),
       tokenNum: map['tokenNum'],
+      tokenUrlImage: map['tokenUrlImage'],
       snapshot: snapshot,
       reference: snapshot.reference,
       documentID: snapshot.id,
@@ -79,31 +82,32 @@ class OrderService {
 
   factory OrderService.fromMap(Map<String, dynamic> map) {
     return OrderService(
-      // clinicList: map['clinicList'] != null
-      //     ? map['clinicList']
-      //         .map<Clinic>((mapString) => Clinic.fromMap(mapString))
-      //         .toList()
-      //     : [],
-      facility:
-          map['facility'] != null ? Facility.fromMap(map['facility']) : null,
-      statusOrder: map['statusOrder'] != null
-          ? StatusOrder.values.byName(map['statusOrder'])
-          : StatusOrder.noOrder,
-      serviceType: map['serviceType'] != null
-          ? ServiceType.values.byName(map['serviceType'])
-          : null,
-      paymentMethod: map['paymentMethod'] != null
-          ? PaymentMethod.values.byName(map['paymentMethod'])
-          : null,
-      totalPay: map['totalPay'],
-      orderDate: (map['orderDate']?.toDate()),
-      orderDateComplete: map['orderDateComplete']?.toDate(),
-      patientRef: map['patientRef'],
-      // appointment: map['appointment']?.toDate(),
-      riderCancelId:
-          map['riderCancelId'] != null ? List.from(map['riderCancelId']) : null,
-      tokenNum: map['tokenNum'],
-    );
+        // clinicList: map['clinicList'] != null
+        //     ? map['clinicList']
+        //         .map<Clinic>((mapString) => Clinic.fromMap(mapString))
+        //         .toList()
+        //     : [],
+        facility:
+            map['facility'] != null ? Facility.fromMap(map['facility']) : null,
+        statusOrder: map['statusOrder'] != null
+            ? StatusOrder.values.byName(map['statusOrder'])
+            : StatusOrder.noOrder,
+        serviceType: map['serviceType'] != null
+            ? ServiceType.values.byName(map['serviceType'])
+            : null,
+        paymentMethod: map['paymentMethod'] != null
+            ? PaymentMethod.values.byName(map['paymentMethod'])
+            : null,
+        totalPay: map['totalPay'],
+        orderDate: (map['orderDate']?.toDate()),
+        orderDateComplete: map['orderDateComplete']?.toDate(),
+        patientRef: map['patientRef'],
+        // appointment: map['appointment']?.toDate(),
+        riderCancelId: map['riderCancelId'] != null
+            ? List.from(map['riderCancelId'])
+            : null,
+        tokenNum: map['tokenNum'],
+        tokenUrlImage: map['tokenUrlImage']);
   }
 
   Map<String, dynamic> toMap() => {
@@ -120,6 +124,7 @@ class OrderService {
         'riderPending': riderPending,
         // 'appointment': appointment,
         'tokenNum': tokenNum,
+        'tokenUrlImage': tokenUrlImage,
       };
 
   // OrderService copyWith({

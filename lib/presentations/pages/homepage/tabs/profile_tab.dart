@@ -130,13 +130,22 @@ class _ProfileTabState extends State<ProfileTab> {
                         height: 90,
                         child: Row(
                           children: [
-                            SizedBox(
+                            Container(
                               height: 90.h,
                               width: 90.h,
-                              child: Image.asset(
-                                'assets/images/profile.png',
-                                height: 90,
-                              ),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      image: patient.profileImageUrl != null
+                                          ? NetworkImage(
+                                              patient.profileImageUrl!)
+                                          : const AssetImage(
+                                                  'assets/images/profile.png')
+                                              as ImageProvider)),
+                              // child: Image.asset(
+                              //   'assets/images/profile.png',
+                              //   height: 90,
+                              // ),
                             ),
                             gapwr(),
                             Expanded(
@@ -356,32 +365,16 @@ class _ProfileTabState extends State<ProfileTab> {
                         //     .every((element) => element.status == false));
                         if (_selectedDay != null &&
                             !clinicList
-                                // !(Provider.of<PatientProvider>(context,
-                                //             listen: false)
-                                //         .patient!
-                                //         .clinicList)
                                 .every((element) => element.status == false)) {
-                          // print('here');
-                          // clinicList = Provider.of<PatientProvider>(
-                          //         context,
-                          //         listen: false)
-                          //     .patient!
-                          //     .clinicList;
-                          // print(clinicList);
                           await FirestoreRepo(uid: auth.uid)
                               .updateAppointment(_selectedDay!);
-                          // await Provider.of<PatientProvider>(context,
-                          //         listen: false)
-                          //     .updatePatient(
-                          //   auth.uid,
-                          //   patient: patient,
-                          // );
-                          // await Provider.of<PatientProvider>(context,
-                          //         listen: false)
-                          //     .updateClinic(clinicList, auth.uid);
-
                           await FirestoreRepo(uid: auth.uid)
                               .updateClinic(clinicList);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Update Saved'),
+                            ),
+                          );
                         } else {
                           // print('else');
                           ScaffoldMessenger.of(context).showSnackBar(

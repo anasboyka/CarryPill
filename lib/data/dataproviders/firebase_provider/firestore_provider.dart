@@ -30,14 +30,21 @@ class FirestoreProvider {
     return await patientCollection.doc(uid).set(patient.toMap());
   }
 
-  Future updatePatientInfoData(String name, String patientId, String icNum,
-      String phoneNum, String address, GeoPoint? geoPoint) async {
+  Future updatePatientInfoData(
+      String name,
+      String patientId,
+      String icNum,
+      String phoneNum,
+      String address,
+      GeoPoint? geoPoint,
+      String? profileImageUrl) async {
     return await patientCollection.doc(uid).update({
       'name': name,
       'phoneNum': phoneNum,
       'patientId': patientId,
       'address': address,
       'geoPoint': geoPoint,
+      'profileImageUrl': profileImageUrl,
     });
   }
 

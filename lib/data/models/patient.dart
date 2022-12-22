@@ -12,6 +12,7 @@ class Patient {
   List<Clinic> clinicList;
   DateTime? appointment;
   GeoPoint? geoPoint;
+  String? profileImageUrl;
   DocumentSnapshot? snapshot;
   DocumentReference? reference;
   String? documentID;
@@ -25,6 +26,7 @@ class Patient {
     this.clinicList = const [],
     this.appointment,
     this.geoPoint,
+    this.profileImageUrl,
     this.snapshot,
     this.reference,
     this.documentID,
@@ -47,6 +49,7 @@ class Patient {
           : [],
       appointment: map['appointment']?.toDate(),
       geoPoint: map['geoPoint'],
+      profileImageUrl: map['profileImageUrl'],
       snapshot: snapshot,
       reference: snapshot.reference,
       documentID: snapshot.id,
@@ -55,16 +58,17 @@ class Patient {
 
   factory Patient.fromMap(Map<String, dynamic> map) {
     return Patient(
-        name: map['name'],
-        icNum: map['icNum'],
-        phoneNum: map['phoneNum'],
-        patientId: map['patientId'],
-        address: map['address'],
-        clinicList: map['clinicList'] != null
-            ? List<Clinic>.from(map['clinicList'])
-            : [],
-        appointment: map['appointment']?.toDate(),
-        geoPoint: map['geoPoint']);
+      name: map['name'],
+      icNum: map['icNum'],
+      phoneNum: map['phoneNum'],
+      patientId: map['patientId'],
+      address: map['address'],
+      clinicList:
+          map['clinicList'] != null ? List<Clinic>.from(map['clinicList']) : [],
+      appointment: map['appointment']?.toDate(),
+      geoPoint: map['geoPoint'],
+      profileImageUrl: map['profileImageUrl'],
+    );
   }
 
   Map<String, dynamic> toMap() => {
@@ -76,6 +80,7 @@ class Patient {
         'clinicList': clinicList.map((e) => e.toMap()).toList(),
         'appointment': appointment,
         'geoPoint': geoPoint,
+        'profileImageUrl': profileImageUrl,
       };
 
   String toJson() => json.encode(toMap());
@@ -83,24 +88,24 @@ class Patient {
   factory Patient.fromJson(String source) =>
       Patient.fromMap(json.decode(source));
 
-  Patient copyWith({
-    required String name,
-    required String icNum,
-    required String phoneNum,
-    required String patientId,
-    required String address,
-    required List<Clinic> clinicList,
-    required DateTime appointment,
-  }) {
-    return Patient(
-        name: name,
-        icNum: icNum,
-        phoneNum: phoneNum,
-        patientId: patientId,
-        address: address,
-        clinicList: clinicList,
-        appointment: appointment);
-  }
+  // Patient copyWith({
+  //   required String name,
+  //   required String icNum,
+  //   required String phoneNum,
+  //   required String patientId,
+  //   required String address,
+  //   required List<Clinic> clinicList,
+  //   required DateTime appointment,
+  // }) {
+  //   return Patient(
+  //       name: name,
+  //       icNum: icNum,
+  //       phoneNum: phoneNum,
+  //       patientId: patientId,
+  //       address: address,
+  //       clinicList: clinicList,
+  //       appointment: appointment);
+  // }
 
   @override
   String toString() {

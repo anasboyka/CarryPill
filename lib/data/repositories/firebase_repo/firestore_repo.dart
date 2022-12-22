@@ -24,9 +24,10 @@ class FirestoreRepo {
       required String icNum,
       required String phoneNum,
       required String address,
-      GeoPoint? geoPoint}) async {
+      GeoPoint? geoPoint,
+      String? profileImageUrl}) async {
     await FirestoreProvider(uid: uid).updatePatientInfoData(
-        name, patientId, icNum, phoneNum, address, geoPoint);
+        name, patientId, icNum, phoneNum, address, geoPoint, profileImageUrl);
   }
 
   //update field

@@ -308,10 +308,15 @@ class _FinishedTabState extends State<FinishedTab> {
                               description = orderService.serviceType ==
                                       ServiceType.requestDelivery
                                   ? ksorderArrived
-                                  : ksorderFinished1 +
-                                      orderService.tokenNum.toString() +
-                                      ksorderFinished2;
-                              statusWidget = kworderArrivedStatusWidget;
+                                  :
+                                  // ksorderFinished1 +
+                                  //     orderService.tokenNum.toString() +
+                                  ksorderFinished2;
+                              statusWidget = orderService.serviceType ==
+                                      ServiceType.requestDelivery
+                                  ? kworderArrivedStatusWidget
+                                  : kworderFinishedStatusWidget(
+                                      orderService.tokenUrlImage!);
                               cardBottomWidget = driverInfoStatusWidget(
                                   driverInfoWidget(
                                     rider,

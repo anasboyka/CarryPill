@@ -15,18 +15,21 @@ class PatientProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updatePatientInfo(
-      {required String name,
-      required String patientId,
-      required String icNum,
-      required String phoneNum,
-      required String address,
-      GeoPoint? geoPoint}) async {
+  void updatePatientInfo({
+    required String name,
+    required String patientId,
+    required String icNum,
+    required String phoneNum,
+    required String address,
+    GeoPoint? geoPoint,
+    String? profileImageUrl,
+  }) async {
     patient?.name = name;
     patient?.patientId = patientId;
     patient?.icNum = icNum;
     patient?.phoneNum = phoneNum;
     patient?.address = address;
+    patient?.profileImageUrl = profileImageUrl;
     notifyListeners();
   }
 

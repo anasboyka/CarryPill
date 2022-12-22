@@ -32,9 +32,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   equatable: ^2.0.3
   file_picker: ^4.5.1
+  image: ^3.2.2
   firebase_analytics: ^9.1.7
   firebase_auth: ^3.3.15
   firebase_core: ^1.15.0
+  firebase_storage: any
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1

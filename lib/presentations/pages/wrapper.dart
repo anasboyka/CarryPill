@@ -10,7 +10,7 @@ import 'homepage/homepage.dart';
 import 'package:flutter/material.dart';
 
 class Wrapper extends StatelessWidget {
-  Wrapper({Key? key}) : super(key: key);
+  const Wrapper({Key? key}) : super(key: key);
   //bool alreadyLogin = true;
 
   @override
