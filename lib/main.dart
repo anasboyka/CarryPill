@@ -20,6 +20,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
+  //testing al
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   Position? position = await LocationRepo().initPosition();
