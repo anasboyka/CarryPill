@@ -91,6 +91,14 @@ class FirestoreRepo {
     return FirestoreProvider(uid: uid).getOrderListStream(descending);
   }
 
+  Stream<List<OrderService>> streamListOrderDelivery({bool descending = true}) {
+    return FirestoreProvider(uid: uid).getOrderListStreamDelivery(descending);
+  }
+
+  Stream<List<OrderService>> streamListOrderPickup({bool descending = true}) {
+    return FirestoreProvider(uid: uid).getOrderListStreamPickup(descending);
+  }
+
   //down order
 
   //up rider

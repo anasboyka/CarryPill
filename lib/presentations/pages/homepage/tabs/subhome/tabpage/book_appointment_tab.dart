@@ -166,7 +166,15 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                             ),
                           );
                         } else {
-                          return const CircularProgressIndicator.adaptive();
+                          return Center(
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: 200,
+                              child: Center(
+                                child: loadingPillriveR(100),
+                              ),
+                            ),
+                          );
                         }
                       }),
                   gaphr(h: 12.5),

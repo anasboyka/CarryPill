@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:rive/rive.dart';
 
 import 'constant_color.dart';
 import 'package:flutter/material.dart';
@@ -383,4 +384,39 @@ Widget kworderFinishedStatusWidget(String imageUrl) {
       ),
     ],
   );
+}
+
+const kfregular = FontWeight.w400;
+const kfmedium = FontWeight.w500;
+const kfsemibold = FontWeight.w600;
+const kfbold = FontWeight.bold;
+const kfextrabold = FontWeight.w800;
+const kfblack = FontWeight.w900;
+
+//loading
+
+Widget loadingPillriveR(
+  double size, {
+  bool center = true,
+  RiveAnimationController? controller,
+}) {
+  if (center) {
+    return Center(
+      child: SizedBox(
+        width: size.w,
+        height: size.w,
+        child: const RiveAnimation.asset(
+          'assets/rive/loading_pill.riv',
+        ),
+      ),
+    );
+  } else {
+    return SizedBox(
+      width: size.w,
+      height: size.w,
+      child: RiveAnimation.asset(
+        'assets/rive/loading_pill.riv',
+      ),
+    );
+  }
 }

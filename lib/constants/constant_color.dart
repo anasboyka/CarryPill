@@ -25,6 +25,7 @@ const kctextpurplepink = Color(0xFFC430A2);
 const kccontainerPink = Color(0xFFFFE5FF);
 const kcsubtitleListTile1 = Color(0xFF77838F);
 const kcsubtitleListTile2 = Color(0xFF999999);
+const kcProfit = Color(0xFF3EA34F);
 
 const kcsubtitle3 = Color(0xFF555555);
 const ktest = Color(0xFF2E3A59);

@@ -65,180 +65,173 @@ class _RegisterState extends State<Register> with InputValidationMixin {
                   fit: BoxFit.cover,
                 ),
               ),
-              child: loading
-                  ? BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                      child: Container(
-                        decoration:
-                            BoxDecoration(color: Colors.white.withOpacity(0.0)),
-                      ),
-                    )
-                  : null,
+              // child: loading
+              //     ? BackdropFilter(
+              //         filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              //         child: Container(
+              //           decoration:
+              //               BoxDecoration(color: Colors.white.withOpacity(0.0)),
+              //         ),
+              //       )
+              //     : null,
             ),
-            Opacity(
-              opacity: loading ? 0.6 : 1,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    gaphr(h: 56),
-                    const Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Create Account',
-                        style: kwstyleHeaderw35,
-                        textAlign: TextAlign.center,
-                      ),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  gaphr(h: 56),
+                  const Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Create Account',
+                      style: kwstyleHeaderw35,
+                      textAlign: TextAlign.center,
                     ),
-                    gaphr(h: 25),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 30.w),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            textInputField('Full Name', namecon, nodename),
-                            gaphr(),
-                            textInputField(
-                                'Email Address', emailcon, nodeemail),
-                            gaphr(),
-                            textInputField('Password', pass1con, nodepass1,
-                                isHidden: isHidden1, isPassword: true),
-                            gaphr(),
-                            textInputField(
-                                'Confirm Password', pass2con, nodepass2,
-                                isHidden: isHidden2, isPassword: true),
-                            gaphr(),
-                            textInputField('IC Number', icNumcon, nodeicNum),
-                            gaphr(),
-                            textInputField(
-                                'Phone Number', phoneNumcon, nodephoneNum),
-                            gaphr(),
-                            // TextInputForm(
-                            //   controller: pass2con,
-                            //   node: nodepass2,
-                            //   hintText: 'Confirm Password',
-                            //   isPassword: true,
-                            //   // validator: (value) {
-                            //   //   if (!isConfPasswordValid(pass1con.text, value)) {
-                            //   //     return 'password must be same';
-                            //   //   }
-                            //   //   return null;
-                            //   // },
-                            // ),
-                            // gaphr(h: 15),
-                            // Align(
-                            //   alignment: Alignment.centerLeft,
-                            //   child: Text(
-                            //     'Forgot Password?',
-                            //     style: textStyleRD(
-                            //       c: Colors.white,
-                            //       fs: 16,
-                            //       fw: FontWeight.w600,
-                            //     ),
-                            //     textAlign: TextAlign.left,
-                            //   ),
-                            // ),
-                            gaphr(h: 28),
-                            MaterialButton(
-                              height: 55.h,
-                              minWidth: double.infinity,
-                              color: kcLightYellow,
-                              shape: cornerR(),
-                              child: Text(
-                                'Sign Up',
-                                style: kwtextStyleRD(
-                                  fs: 16,
-                                  c: kcSignIn,
-                                ),
+                  ),
+                  gaphr(h: 25),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30.w),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          textInputField('Full Name', namecon, nodename),
+                          gaphr(),
+                          textInputField('Email Address', emailcon, nodeemail),
+                          gaphr(),
+                          textInputField('Password', pass1con, nodepass1,
+                              isHidden: isHidden1, isPassword: true),
+                          gaphr(),
+                          textInputField(
+                              'Confirm Password', pass2con, nodepass2,
+                              isHidden: isHidden2, isPassword: true),
+                          gaphr(),
+                          textInputField('IC Number', icNumcon, nodeicNum),
+                          gaphr(),
+                          textInputField(
+                              'Phone Number', phoneNumcon, nodephoneNum),
+                          gaphr(),
+                          // TextInputForm(
+                          //   controller: pass2con,
+                          //   node: nodepass2,
+                          //   hintText: 'Confirm Password',
+                          //   isPassword: true,
+                          //   // validator: (value) {
+                          //   //   if (!isConfPasswordValid(pass1con.text, value)) {
+                          //   //     return 'password must be same';
+                          //   //   }
+                          //   //   return null;
+                          //   // },
+                          // ),
+                          // gaphr(h: 15),
+                          // Align(
+                          //   alignment: Alignment.centerLeft,
+                          //   child: Text(
+                          //     'Forgot Password?',
+                          //     style: textStyleRD(
+                          //       c: Colors.white,
+                          //       fs: 16,
+                          //       fw: FontWeight.w600,
+                          //     ),
+                          //     textAlign: TextAlign.left,
+                          //   ),
+                          // ),
+                          gaphr(h: 28),
+                          MaterialButton(
+                            height: 55.h,
+                            minWidth: double.infinity,
+                            color: kcLightYellow,
+                            shape: cornerR(),
+                            child: Text(
+                              'Sign Up',
+                              style: kwtextStyleRD(
+                                fs: 16,
+                                c: kcSignIn,
                               ),
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  Patient patient = Patient(
-                                    name: namecon.text,
-                                    icNum: icNumcon.text,
-                                    phoneNum: phoneNumcon.text,
-                                    clinicList: clinicList,
-                                  );
-                                  setState(() => loading = true);
-                                  dynamic result = await AuthRepo().register(
-                                      patient, emailcon.text, pass1con.text);
-                                  if (result == null) {
-                                    if (mounted) {
-                                      setState(() {
-                                        error = "please supply a valid email";
-                                        loading = false;
-                                      });
+                            ),
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                Patient patient = Patient(
+                                  name: namecon.text,
+                                  icNum: icNumcon.text,
+                                  phoneNum: phoneNumcon.text,
+                                  clinicList: clinicList,
+                                );
+                                setState(() => loading = true);
+                                dynamic result = await AuthRepo().register(
+                                    patient, emailcon.text, pass1con.text);
+                                if (result == null) {
+                                  if (mounted) {
+                                    setState(() {
+                                      error = "please supply a valid email";
+                                      loading = false;
+                                    });
 
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(content: Text(error)),
-                                      );
-                                    }
-                                  } else if (result is String) {
-                                    if (mounted) {
-                                      setState(() {
-                                        error = result;
-                                        loading = false;
-                                      });
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(error)),
+                                    );
+                                  }
+                                } else if (result is String) {
+                                  if (mounted) {
+                                    setState(() {
+                                      error = result;
+                                      loading = false;
+                                    });
 
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(content: Text(error)),
-                                      );
-                                    }
-                                  } else {
-                                    if (mounted) {
-                                      setState(() {
-                                        loading = false;
-                                      });
-                                    }
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(error)),
+                                    );
+                                  }
+                                } else {
+                                  if (mounted) {
+                                    setState(() {
+                                      loading = false;
+                                    });
                                   }
                                 }
-                              },
-                            ),
-                            gaphr(),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'Already have account?',
-                                  style: kwstylew16,
-                                ),
-                                InkWell(
-                                  child: Text(
-                                    'Sign In',
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      color: kcWhite,
-                                      decoration: TextDecoration.underline,
-                                    ),
+                              }
+                            },
+                          ),
+                          gaphr(),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Already have account?',
+                                style: kwstylew16,
+                              ),
+                              InkWell(
+                                child: Text(
+                                  'Sign In',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: kcWhite,
+                                    decoration: TextDecoration.underline,
                                   ),
-                                  onTap: () {
-                                    //print('toggle');
-                                    widget.toggleView();
-                                  },
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            loading
-                ? Center(
-                    child: SizedBox(
-                      height: 40.h,
-                      width: 40.h,
-                      child: const CircularProgressIndicator.adaptive(
-                        backgroundColor: kcWhite,
+                                ),
+                                onTap: () {
+                                  //print('toggle');
+                                  widget.toggleView();
+                                },
+                              )
+                            ],
+                          )
+                        ],
                       ),
                     ),
                   )
-                : gapw(w: 0),
+                ],
+              ),
+            ),
+            loading
+                ? Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade400.withOpacity(0.4),
+                    ),
+                    child: loadingPillriveR(100),
+                  )
+                : const SizedBox(),
           ],
         ));
   }

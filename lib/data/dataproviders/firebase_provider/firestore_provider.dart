@@ -183,6 +183,24 @@ class FirestoreProvider {
         .map(_orderListFromSnapshot);
   }
 
+  Stream<List<OrderService>> getOrderListStreamDelivery(bool descending) {
+    return orderCollection
+        .where('patientRef', isEqualTo: uid)
+        .where('serviceType', isEqualTo: 'requestDelivery')
+        .orderBy('orderDate', descending: descending)
+        .snapshots()
+        .map(_orderListFromSnapshot);
+  }
+
+  Stream<List<OrderService>> getOrderListStreamPickup(bool descending) {
+    return orderCollection
+        .where('patientRef', isEqualTo: uid)
+        .where('serviceType', isEqualTo: 'requestPickup')
+        .orderBy('orderDate', descending: descending)
+        .snapshots()
+        .map(_orderListFromSnapshot);
+  }
+
   List<OrderService> _orderListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) => OrderService.fromFirestore(doc)).toList();
   }

@@ -23,5 +23,4 @@ const ksorderArrived =
     'Your order has been delivered. Thankyou for using this service';
 
 const ksorderFinished1 = 'Your token no is ';
-const ksorderFinished2 =
-    '. Please collect on the facility upon 2 working days!';
+const ksorderFinished2 = 'Please collect on the facility upon 2 working days!';

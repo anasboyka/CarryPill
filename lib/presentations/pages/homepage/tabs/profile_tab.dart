@@ -401,20 +401,6 @@ class _ProfileTabState extends State<ProfileTab> {
         ),
       ),
     );
-    //       } else {
-    //         return const Center(
-    //           child: SizedBox(
-    //             width: 150,
-    //             height: 150,
-    //             child: CircularProgressIndicator.adaptive(
-    //               backgroundColor: kcPrimary,
-    //             ),
-    //           ),
-    //         );
-    //       }
-    //     },
-    //   ),
-    // );
   }
 
   void radioToggle(int index, PatientProvider patientProvider) {

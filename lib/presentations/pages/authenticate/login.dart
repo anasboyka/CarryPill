@@ -146,18 +146,7 @@ class _LoginState extends State<Login> with InputValidationMixin {
                               }
                             },
                           ),
-                          gaphr(h: 50),
-                          Opacity(
-                            opacity: !loading ? 0 : 1,
-                            child: SizedBox(
-                              height: 40.h,
-                              width: 40.h,
-                              child: const CircularProgressIndicator.adaptive(
-                                backgroundColor: kctextDark,
-                              ),
-                            ),
-                          ),
-                          gaphr(h: 50),
+                          gaphr(h: 140),
                           const Text(
                             'or, Sign in with',
                             style: kwstylew16,

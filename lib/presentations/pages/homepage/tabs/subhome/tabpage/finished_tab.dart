@@ -359,7 +359,15 @@ class _FinishedTabState extends State<FinishedTab> {
                             ],
                           );
                         } else {
-                          return const CircularProgressIndicator.adaptive();
+                          return Center(
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: 200,
+                              child: Center(
+                                child: loadingPillriveR(100),
+                              ),
+                            ),
+                          );
                         }
                       },
                     );
@@ -419,8 +427,14 @@ class _FinishedTabState extends State<FinishedTab> {
               ),
             );
           } else {
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
+            return Center(
+              child: SizedBox(
+                width: double.infinity,
+                height: 200,
+                child: Center(
+                  child: loadingPillriveR(100),
+                ),
+              ),
             );
           }
         });
@@ -461,6 +475,7 @@ class _FinishedTabState extends State<FinishedTab> {
             if (rider.orderCancelId!.isNotEmpty &&
                 !rider.orderCancelId!.contains(orderId)) {
               streamSubscription1?.pause();
+              print(rider.documentID);
               await FirestoreRepo()
                   .updateRiderPending(rider.documentID!, orderId);
               bool result =
@@ -481,6 +496,7 @@ class _FinishedTabState extends State<FinishedTab> {
             }
           } else {
             streamSubscription1?.pause();
+            print(rider.documentID);
             await FirestoreRepo()
                 .updateRiderPending(rider.documentID!, orderId);
             bool? result =
@@ -932,7 +948,16 @@ class _FinishedTabState extends State<FinishedTab> {
                   //4.4 //rate,
                 );
               } else {
-                return const CircularProgressIndicator.adaptive();
+                return Center(
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 200,
+                    child: Center(
+                      child: loadingPillriveR(100),
+                    ),
+                  ),
+                );
+                ;
               }
             }),
         gaphr(h: 42)

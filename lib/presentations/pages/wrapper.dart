@@ -1,4 +1,5 @@
 import 'package:carrypill/business_logic/provider/patient_provider.dart';
+import 'package:carrypill/constants/constant_widget.dart';
 import 'package:carrypill/data/models/patient.dart';
 import 'package:carrypill/data/models/patient_uid.dart';
 import 'package:carrypill/data/repositories/firebase_repo/auth_repo.dart';
@@ -17,7 +18,7 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final patientuid = Provider.of<PatientUid?>(context);
     if (patientuid != null) {
-      //AuthRepo().logout();
+      // AuthRepo().logout();
       return StreamBuilder(
           stream: FirestoreRepo(uid: patientuid.uid).streamPatient,
           builder: (context, AsyncSnapshot snapshot) {
@@ -28,8 +29,16 @@ class Wrapper extends StatelessWidget {
 
               return HomePage(patient: patient);
             } else {
-              return const Center(
-                child: CircularProgressIndicator.adaptive(),
+              return Scaffold(
+                body: Center(
+                  child: SizedBox(
+                    height: 250,
+                    width: 250,
+                    child: Center(
+                      child: loadingPillriveR(100),
+                    ),
+                  ),
+                ),
               );
             }
           });
