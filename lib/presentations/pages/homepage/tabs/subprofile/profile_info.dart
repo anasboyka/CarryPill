@@ -234,32 +234,37 @@ class _ProfileInfoState extends State<ProfileInfo> {
                           geo = GeoPoint(address.latitude, address.longitude);
                         }
 
-                        final String? url = await StorageRepo(
-                                uid: useraccount.uid)
-                            .uploadPatientProfileImage(filePath!, fileName!);
-                        // print(url);
+                        if (filePath != null) {
+                          final String? url = await StorageRepo(
+                                  uid: useraccount.uid)
+                              .uploadPatientProfileImage(filePath!, fileName!);
 
-                        Provider.of<PatientProvider>(context, listen: false)
-                            .updatePatientInfo(
-                          name: namecon.text,
-                          icNum: icNumcon.text,
-                          phoneNum: phoneNumcon.text,
-                          address: addresscon.text,
-                          patientId: patientIdcon.text,
-                          geoPoint: geo,
-                          profileImageUrl: url,
-                        );
+                          // print(url);
+
+                          Provider.of<PatientProvider>(context, listen: false)
+                              .updatePatientInfo(
+                            name: namecon.text,
+                            icNum: icNumcon.text,
+                            phoneNum: phoneNumcon.text,
+                            address: addresscon.text,
+                            patientId: patientIdcon.text,
+                            geoPoint: geo,
+                            profileImageUrl: url,
+                          );
+                        } else {
+                          await FirestoreRepo(uid: useraccount.uid)
+                              .updatePatientInfo(
+                            name: namecon.text,
+                            icNum: icNumcon.text,
+                            phoneNum: phoneNumcon.text,
+                            address: addresscon.text,
+                            patientId: patientIdcon.text,
+                            geoPoint: geo,
+                            profileImageUrl: patient!.profileImageUrl,
+                          );
+                        }
                         //GeoPoint geoPoint = GeoPoint(pos.latitude, pos.longitude);
-                        await FirestoreRepo(uid: useraccount.uid)
-                            .updatePatientInfo(
-                          name: namecon.text,
-                          icNum: icNumcon.text,
-                          phoneNum: phoneNumcon.text,
-                          address: addresscon.text,
-                          patientId: patientIdcon.text,
-                          geoPoint: geo,
-                          profileImageUrl: url,
-                        );
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Update Saved'),
