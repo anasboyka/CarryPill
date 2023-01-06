@@ -448,7 +448,7 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
     setState(() {
       clinicList[index].status = !clinicList[index].status;
     });
-    print(clinicList[index].status);
+    // print(clinicList[index].status);
   }
 
   TextFormField inputTextField({

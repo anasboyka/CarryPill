@@ -467,28 +467,28 @@ class _FinishedTabState extends State<FinishedTab> {
     streamSubscription1 = streamRiders.listen((riderList) async {
       if (riderList != null && riderList.isNotEmpty) {
         for (var i = 0; i < riderList.length; i++) {
-          print(i);
-          print('start loop');
+          // print(i);
+          // print('start loop');
           Rider rider = riderList[i];
 
           if (rider.orderCancelId != null) {
             if (rider.orderCancelId!.isNotEmpty &&
                 !rider.orderCancelId!.contains(orderId)) {
               streamSubscription1?.pause();
-              print(rider.documentID);
+              // print(rider.documentID);
               await FirestoreRepo()
                   .updateRiderPending(rider.documentID!, orderId);
               bool result =
                   await streamCheckRiderPending(rider.documentID!) ?? false;
               if (result) {
-                print('if cancel id != null & after rider pending break');
+                // print('if cancel id != null & after rider pending break');
                 break;
               } else {
-                print('if cancel id x= null & after rider pending continue');
+                // print('if cancel id x= null & after rider pending continue');
                 continue;
               }
             } else {
-              print('stream paused');
+              // print('stream paused');
               if (streamSubscription1!.isPaused) {
                 streamSubscription1?.resume();
               }
@@ -496,23 +496,23 @@ class _FinishedTabState extends State<FinishedTab> {
             }
           } else {
             streamSubscription1?.pause();
-            print(rider.documentID);
+            // print(rider.documentID);
             await FirestoreRepo()
                 .updateRiderPending(rider.documentID!, orderId);
             bool? result =
                 await streamCheckRiderPending(rider.documentID!) ?? false;
             if (result) {
-              print('if cancel id == null & after rider pending break');
+              // print('if cancel id == null & after rider pending break');
               break;
             } else {
-              print('if cancel id == null & after rider pending continue');
+              // print('if cancel id == null & after rider pending continue');
               continue;
             }
           }
         }
-        print('end for loop');
+        // print('end for loop');
       } else {
-        print('rider list null or empty');
+        // print('rider list null or empty');
       }
     });
   }
@@ -657,7 +657,7 @@ class _FinishedTabState extends State<FinishedTab> {
                         ),
                         onPressed: () async {
                           //todo call rider
-                          print('here');
+                          // print('here');
                           // final callLaunchUrl = Uri.parse('tel:+60175970081');
                           final Uri callLaunchUrl = Uri(
                             scheme: 'tel',

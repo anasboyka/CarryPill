@@ -217,11 +217,11 @@ class _ProfileInfoState extends State<ProfileInfo> {
                   gaphr(h: 30),
                   MaterialButton(
                     onPressed: () async {
+                      GeoPoint geo;
                       setState(() {
                         loading = true;
                       });
                       try {
-                        GeoPoint geo;
                         if (addresscon.text.isEmpty) {
                           Position pos =
                               await LocationRepo().getCurrentLocation();
@@ -251,8 +251,19 @@ class _ProfileInfoState extends State<ProfileInfo> {
                             geoPoint: geo,
                             profileImageUrl: url,
                           );
-                        } else {
                           await FirestoreRepo(uid: useraccount.uid)
+                              .updatePatientInfo(
+                            name: namecon.text,
+                            icNum: icNumcon.text,
+                            phoneNum: phoneNumcon.text,
+                            address: addresscon.text,
+                            patientId: patientIdcon.text,
+                            geoPoint: geo,
+                            profileImageUrl: url,
+                          );
+                          // print('if');
+                        } else {
+                          Provider.of<PatientProvider>(context, listen: false)
                               .updatePatientInfo(
                             name: namecon.text,
                             icNum: icNumcon.text,
@@ -262,6 +273,17 @@ class _ProfileInfoState extends State<ProfileInfo> {
                             geoPoint: geo,
                             profileImageUrl: patient!.profileImageUrl,
                           );
+                          await FirestoreRepo(uid: useraccount.uid)
+                              .updatePatientInfo(
+                            name: namecon.text,
+                            icNum: icNumcon.text,
+                            phoneNum: phoneNumcon.text,
+                            address: addresscon.text,
+                            patientId: patientIdcon.text,
+                            geoPoint: geo,
+                            profileImageUrl: patient.profileImageUrl,
+                          );
+                          // print('else');
                         }
                         //GeoPoint geoPoint = GeoPoint(pos.latitude, pos.longitude);
 

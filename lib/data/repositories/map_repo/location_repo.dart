@@ -30,7 +30,8 @@ class LocationRepo {
     if (!hasPermission) {
       return null;
     }
-    return await LocationProvider().getLastLocation();
+    return await LocationProvider().getCurrentLocation();
+    // return await LocationProvider().getLastLocation();
   }
 
   double calculateDistance(GeoPoint geoPoint1, GeoPoint geoPoint2) {

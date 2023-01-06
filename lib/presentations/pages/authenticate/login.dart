@@ -297,7 +297,7 @@ class _LoginState extends State<Login> with InputValidationMixin {
                   onPressed: () {
                     setState(() {
                       isHidden = !isHidden;
-                      print(isHidden);
+                      // print(isHidden);
                     });
                   },
                   icon: isHidden
