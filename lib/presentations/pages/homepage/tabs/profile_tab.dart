@@ -244,7 +244,7 @@ class _ProfileTabState extends State<ProfileTab> {
                               ),
                               focusedDay: _focusedDay,
                               firstDay: DateTime(1998),
-                              lastDay: DateTime(2030),
+                              lastDay: DateTime(2025),
                               calendarFormat: CalendarFormat.twoWeeks,
                               selectedDayPredicate: (day) {
                                 return isSameDay(_selectedDay, day);

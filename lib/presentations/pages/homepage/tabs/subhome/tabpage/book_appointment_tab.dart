@@ -329,7 +329,7 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                             ),
                             focusedDay: _focusedDay,
                             firstDay: DateTime(1998),
-                            lastDay: DateTime(2023),
+                            lastDay: DateTime(2025),
                             calendarFormat: CalendarFormat.week,
                             selectedDayPredicate: (day) {
                               return isSameDay(_selectedDay, day);
