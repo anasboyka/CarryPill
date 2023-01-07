@@ -232,23 +232,23 @@ class _FinishedTabState extends State<FinishedTab> {
                               cardBottomWidget =
                                   deliveryServiceStatusWidget(orderService);
                               break;
-                            case StatusOrder.driverToHospital:
-                              textOrange = 'On it!';
-                              description = ksdriverToHospital;
-                              statusWidget = kwdriverToHospitalStatusWidget;
-                              cardBottomWidget = driverInfoStatusWidget(
-                                driverInfoWidget(
-                                  rider,
-                                  // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
-                                  // rider.vehicleType, //'Ysuku',
-                                  // rider.phoneNum, //'DBQ 4021',
-                                  // 4.5,
-                                ),
-                                orderService,
-                                useraccount.uid,
-                                rider,
-                              );
-                              break;
+                            // case StatusOrder.driverToHospital:
+                            //   textOrange = 'On it!';
+                            //   description = ksdriverToHospital;
+                            //   statusWidget = kwdriverToHospitalStatusWidget;
+                            //   cardBottomWidget = driverInfoStatusWidget(
+                            //     driverInfoWidget(
+                            //       rider,
+                            //       // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
+                            //       // rider.vehicleType, //'Ysuku',
+                            //       // rider.phoneNum, //'DBQ 4021',
+                            //       // 4.5,
+                            //     ),
+                            //     orderService,
+                            //     useraccount.uid,
+                            //     rider,
+                            //   );
+                            //   break;
                             case StatusOrder.driverQueue:
                               textOrange = 'Queueing';
                               description = ksdriverQueue;
@@ -630,92 +630,7 @@ class _FinishedTabState extends State<FinishedTab> {
                   }
                 },
               )
-            : Row(
-                children: [
-                  Expanded(
-                    child: MaterialButton(
-                        shape: cornerR(r: 25),
-                        height: 38.h,
-                        color: kcWhite,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.asset(
-                              'assets/icons/call_icon.png',
-                              height: 13,
-                            ),
-                            gapwr(w: 10),
-                            Text(
-                              'Call',
-                              style: kwtextStyleRD(
-                                fs: 10,
-                                c: kcPrimary,
-                                fw: FontWeight.bold,
-                              ),
-                            )
-                          ],
-                        ),
-                        onPressed: () async {
-                          //todo call rider
-                          // print('here');
-                          // final callLaunchUrl = Uri.parse('tel:+60175970081');
-                          final Uri callLaunchUrl = Uri(
-                            scheme: 'tel',
-                            path: rider.phoneNum,
-                            //path: '+60175970081',
-                          );
-                          try {
-                            // if (await canLaunchUrl(callLaunchUrl)) {
-                            await launchUrl(callLaunchUrl);
-                            // } else {
-                            //print('error');
-                            // }
-                          } on Exception catch (e) {
-                            // TODO
-                            print(e);
-                          }
-                          // await FlutterPhoneDirectCaller.callNumber(
-                          //     '+60175970081');
-                        }),
-                  ),
-                  gapwr(w: 10),
-                  Expanded(
-                    child: MaterialButton(
-                        shape: cornerR(r: 25),
-                        color: kcPrimary,
-                        height: 38.h,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.asset('assets/icons/chat_icon.png',
-                                height: 13),
-                            gapwr(w: 10),
-                            Text(
-                              'Message',
-                              style: kwtextStyleRD(
-                                fs: 10,
-                                c: kcWhite,
-                                fw: FontWeight.bold,
-                              ),
-                            )
-                          ],
-                        ),
-                        onPressed: () async {
-                          final Uri smsLaunchUri = Uri(
-                            scheme: 'sms',
-                            path: rider.phoneNum,
-                            //path: '+60175970081',
-                            queryParameters: <String, String>{
-                              'body': Uri.encodeComponent('hello'),
-                            },
-                          );
-                          if (await canLaunchUrl(smsLaunchUri)) {
-                            await launchUrl(smsLaunchUri);
-                          }
-                        }),
-                  )
-                ],
-              ),
+            : gapw(w: 0),
       ],
     );
   }

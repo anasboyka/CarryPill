@@ -30,11 +30,6 @@ class _PaymentTabState extends State<PaymentTab> {
       paymentMethod: PaymentMethod.debitcredit,
     ),
     PaymentType(
-      imgPath: 'assets/images/fpx.png',
-      paymentName: 'Online Banking',
-      paymentMethod: PaymentMethod.fpx,
-    ),
-    PaymentType(
       imgPath: 'assets/images/cod.png',
       paymentName: 'Payment in cash',
       paymentMethod: PaymentMethod.cash,
