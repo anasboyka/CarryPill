@@ -232,23 +232,23 @@ class _FinishedTabState extends State<FinishedTab> {
                               cardBottomWidget =
                                   deliveryServiceStatusWidget(orderService);
                               break;
-                            case StatusOrder.driverToHospital:
-                              textOrange = 'On it!';
-                              description = ksdriverToHospital;
-                              statusWidget = kwdriverToHospitalStatusWidget;
-                              cardBottomWidget = driverInfoStatusWidget(
-                                driverInfoWidget(
-                                  rider,
-                                  // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
-                                  // rider.vehicleType, //'Ysuku',
-                                  // rider.phoneNum, //'DBQ 4021',
-                                  // 4.5,
-                                ),
-                                orderService,
-                                useraccount.uid,
-                                rider,
-                              );
-                              break;
+                            // case StatusOrder.driverToHospital:
+                            //   textOrange = 'On it!';
+                            //   description = ksdriverToHospital;
+                            //   statusWidget = kwdriverToHospitalStatusWidget;
+                            //   cardBottomWidget = driverInfoStatusWidget(
+                            //     driverInfoWidget(
+                            //       rider,
+                            //       // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
+                            //       // rider.vehicleType, //'Ysuku',
+                            //       // rider.phoneNum, //'DBQ 4021',
+                            //       // 4.5,
+                            //     ),
+                            //     orderService,
+                            //     useraccount.uid,
+                            //     rider,
+                            //   );
+                            //   break;
                             case StatusOrder.driverQueue:
                               textOrange = 'Queueing';
                               description = ksdriverQueue;
