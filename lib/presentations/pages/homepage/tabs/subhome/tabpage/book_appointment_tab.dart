@@ -61,11 +61,7 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
-  Facility facility = Facility(
-      facilityName: 'Hospital Kuala Lumpur',
-      geoPoint: const GeoPoint(3.1715, 101.7025),
-      fullAddress:
-          'Jalan Pahang, 50586 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur');
+  Facility? facility;
 
   @override
   void initState() {
@@ -105,24 +101,74 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                     ),
                   ),
                   gaphr(h: 12.5),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.r),
-                      color: kcWhite,
-                    ),
-                    child: Text(
-                      'Hospital Sultan Abdul Halim',
-                      style: kwtextStyleRD(
-                        c: kcPrimary,
-                        fs: 14,
-                        fw: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-
+                  FutureBuilder(
+                      future: FirestoreRepo().facilityList,
+                      builder: (_, AsyncSnapshot snapshot) {
+                        if (snapshot.hasData) {
+                          List<Facility> facilities = snapshot.data;
+                          return Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.r),
+                              color: kcWhite,
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<Facility>(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  isExpanded: true,
+                                  hint: Row(
+                                    children: [
+                                      const Text("Choose your facility"),
+                                      facility == null
+                                          ? Text(
+                                              '(Required)',
+                                              style: kwtextStyleRD(
+                                                c: Colors.red,
+                                                fs: 10,
+                                                fw: FontWeight.w600,
+                                              ),
+                                            )
+                                          : gapw(w: 0),
+                                    ],
+                                  ),
+                                  value: facility,
+                                  items: facilities
+                                      .map(
+                                        (e) => DropdownMenuItem<Facility>(
+                                          value: e,
+                                          child: Text(
+                                            e.facilityName,
+                                            style: kwtextStyleRD(
+                                              c: kcPrimary,
+                                              fs: 14,
+                                              fw: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (Facility? facilityy) {
+                                    setState(() {
+                                      facility = facilityy;
+                                      Provider.of<OrderProvider>(context,
+                                              listen: false)
+                                          .setFacility(facility!);
+                                    });
+                                  }),
+                            ),
+                          );
+                        } else {
+                          return Center(
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: 200,
+                              child: Center(
+                                child: loadingPillriveR(100),
+                              ),
+                            ),
+                          );
+                        }
+                      }),
                   gaphr(h: 12.5),
                   Align(
                     alignment: Alignment.centerLeft,
@@ -281,7 +327,7 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                               return isSameDay(_selectedDay, day);
                             },
                             onDaySelected: (selectedDay, focusedDay) {
-                              if (!isSameDay(_selectedDay, selectedDay)) {
+                              if (!isSameDay(selectedDay, selectedDay)) {
                                 setState(() {
                                   _selectedDay = selectedDay;
                                   _focusedDay = focusedDay;
@@ -320,7 +366,8 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                       phoneNumCon.text.isNotEmpty &&
                       addressCon.text.isNotEmpty &&
                       !clinicList.every((element) => element.status == false) &&
-                      _selectedDay != null) {
+                      _selectedDay != null &&
+                      facility != null) {
                     OrderService orderService =
                         Provider.of<OrderProvider>(context, listen: false)
                             .orderService;
@@ -346,8 +393,8 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                     //   // TODO
                     // }
 
-                    geoFacility = GeoPoint(facility.geoPoint.latitude,
-                        facility.geoPoint.longitude);
+                    geoFacility = GeoPoint(facility!.geoPoint.latitude,
+                        facility!.geoPoint.longitude);
                     totalPay = orderService.serviceType ==
                             ServiceType.requestDelivery
                         ? LocationRepo()
@@ -366,7 +413,7 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                     Provider.of<OrderProvider>(context, listen: false)
                         .updatePatient(patient);
                     Provider.of<OrderProvider>(context, listen: false)
-                        .setFacility(facility);
+                        .setFacility(facility!);
                     Provider.of<OrderProvider>(context, listen: false)
                         .setTotalPay(totalPay);
 
