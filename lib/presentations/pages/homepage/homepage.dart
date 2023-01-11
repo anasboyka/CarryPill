@@ -64,6 +64,7 @@ class _HomePageState extends State<HomePage> {
       body: IndexedStack(
         children: [
           HomeTab(patient: widget.patient),
+          const OrderTab(),
           ProfileTab(patient: widget.patient),
         ],
         index: currentIndex,
@@ -120,6 +121,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                   iconTabButton(
                     1,
+                    'Orders',
+                    'assets/icons/order_icon_filled.png',
+                    'assets/icons/order_icon.png',
+                  ),
+                  iconTabButton(
+                    2,
                     'Profile',
                     'assets/icons/profile_icon_filled.png',
                     'assets/icons/profile_icon.png',
