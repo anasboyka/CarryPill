@@ -128,7 +128,19 @@ class _FinishedTabState extends State<FinishedTab> {
                               cardBottomWidget =
                                   deliveryServiceStatusWidget(orderService);
                               break;
-
+                            case StatusOrder.driverToHospital:
+                              textOrange = 'On it!';
+                              description = ksdriverToHospital;
+                              statusWidget = kwdriverToHospitalStatusWidget;
+                              cardBottomWidget = driverInfoStatusWidget(
+                                driverInfoWidget(
+                                  rider,
+                                ),
+                                orderService,
+                                useraccount.uid,
+                                rider,
+                              );
+                              break;
                             case StatusOrder.driverQueue:
                               textOrange = 'Queueing';
                               description = ksdriverQueue;
