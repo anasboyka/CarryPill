@@ -35,25 +35,14 @@ class _FinishedTabState extends State<FinishedTab> {
   String description = ksorderReceived;
   late Widget cardBottomWidget;
   StreamSubscription? streamSubscription1, streamSubscription2;
-  // Patient patient = Patient(
-  //     name: 'name',
-  //     icNum: 'icNum',
-  //     phoneNum: 'phoneNum',
-  //     patientId: 'patientId',
-  //     address: 'address',
-  //     clinicList: [],
-  //     appointment: DateTime.now());
 
   @override
   void initState() {
-    // TODO: implement initState
-    // AuthRepo().register(patient, 'test@gmail.com', '123456');
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     streamSubscription1?.cancel().then((_) => streamSubscription1 = null);
     streamSubscription2?.cancel().then((_) => streamSubscription2 = null);
 
@@ -62,14 +51,13 @@ class _FinishedTabState extends State<FinishedTab> {
 
   @override
   Widget build(BuildContext context) {
-    //StatusOrder statusOrder = StatusOrder.noOrder;
     PatientUid useraccount = Provider.of<PatientUid>(context);
     return StreamBuilder<OrderService>(
         stream: FirestoreRepo().streamCurrentOrder(),
         builder: (_, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             OrderService orderService = snapshot.data;
-            // print(orderService.statusOrder);
+
             return SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 22.w),
@@ -113,98 +101,6 @@ class _FinishedTabState extends State<FinishedTab> {
                         gaphr(h: 23),
                       ],
                     );
-                    // switch (orderService.statusOrder) {
-                    //   case StatusOrder.findingDriver:
-                    //     cardBottomWidget =
-                    //         deliveryServiceStatusWidget(orderService);
-                    //     Future.delayed(const Duration(seconds: 2), () async {
-                    //       if (orderService.orderQueryStatus == null) {
-                    //         await FirestoreRepo().updateOrderQueryStatus(
-                    //             'findingDriver', orderService.documentID!);
-                    //         if (streamSubscription1 == null) {
-                    //           streamStartFindRiders(orderService.documentID!);
-                    //         }
-                    //         setState(() {});
-                    //       }
-                    //       textOrange = 'Finding you a driver';
-                    //       description = ksorderReceived;
-                    //       statusWidget = kwfindingDriverStatusWidget;
-                    //       cardBottomWidget =
-                    //           deliveryServiceStatusWidget(orderService);
-                    //     });
-                    //     break;
-                    //   case StatusOrder.driverFound:
-                    //     streamSubscription1
-                    //         ?.cancel()
-                    //         .then((_) => streamSubscription1 = null);
-                    //     streamSubscription2
-                    //         ?.cancel()
-                    //         .then((_) => streamSubscription2 = null);
-                    //     textOrange = 'Driver Found!';
-                    //     description = ksorderReceived;
-                    //     statusWidget = driverfoundStatusWidget(
-                    //       'Mohamed Salah',
-                    //       'Ysuku',
-                    //       'DBQ 4021',
-                    //       4.5,
-                    //       orderService.riderRef!,
-                    //     );
-                    //     cardBottomWidget =
-                    //         deliveryServiceStatusWidget(orderService);
-                    //     break;
-                    //   case StatusOrder.driverToHospital:
-                    //     textOrange = 'On it!';
-                    //     description = ksdriverToHospital;
-                    //     statusWidget = kwdriverToHospitalStatusWidget;
-                    //     break;
-                    //   case StatusOrder.driverQueue:
-                    //     textOrange = 'Queueing';
-                    //     description = ksdriverQueue;
-                    //     statusWidget = kwdriverQueueStatusWidget;
-                    //     cardBottomWidget = driverInfoStatusWidget(
-                    //         driverInfoWidget(
-                    //             'Mohamed Salah', 'Ysuku', 'DBQ 4021', 4.5),
-                    //         orderService,
-                    //         useraccount.uid);
-                    //     break;
-                    //   case StatusOrder.orderPreparing:
-                    //     textOrange = 'Waiting';
-                    //     description = ksorderPreparing;
-                    //     statusWidget = kworderPreparingStatusWidget;
-                    //     cardBottomWidget = driverInfoStatusWidget(
-                    //         driverInfoWidget(
-                    //             'Mohamed Salah', 'Ysuku', 'DBQ 4021', 4.5),
-                    //         orderService,
-                    //         useraccount.uid);
-                    //     break;
-                    //   case StatusOrder.outForDelivery:
-                    //     textOrange = 'Out for Delivery!';
-                    //     description = ksoutForDelivery;
-                    //     statusWidget = kwOutForDeliveryStatusWidget;
-                    //     cardBottomWidget = driverInfoStatusWidget(
-                    //         driverInfoWidget(
-                    //             'Mohamed Salah', 'Ysuku', 'DBQ 4021', 4.5),
-                    //         orderService,
-                    //         useraccount.uid);
-                    //     break;
-                    //   case StatusOrder.orderArrived:
-                    //     textOrange = 'Arrived!';
-                    //     description = ksorderArrived;
-                    //     statusWidget = kworderArrivedStatusWidget;
-                    //     cardBottomWidget = driverInfoStatusWidget(
-                    //         driverInfoWidget(
-                    //             'Mohamed Salah', 'Ysuku', 'DBQ 4021', 4.5),
-                    //         orderService,
-                    //         useraccount.uid,
-                    //         arrived: true);
-                    //     break;
-                    //   default:
-                    //     textOrange = 'Order Error ';
-                    //     description = 'system error for the current order';
-                    //     statusWidget = gapw(w: 0);
-                    //     cardBottomWidget = gapw(w: 0);
-                    //     break;
-                    // }
                   } else {
                     return StreamBuilder(
                       stream: FirestoreRepo()
@@ -223,32 +119,16 @@ class _FinishedTabState extends State<FinishedTab> {
                               textOrange = 'Driver Found!';
                               description = ksorderReceived;
                               statusWidget = driverfoundStatusWidget(
-                                ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
-                                rider.vehicleType, //'Ysuku',
-                                rider.phoneNum, //'DBQ 4021',
+                                ("${rider.firstName} ${rider.lastName}"),
+                                rider.vehicleType,
+                                rider.phoneNum,
                                 4.5,
                                 orderService.riderRef!,
                               );
                               cardBottomWidget =
                                   deliveryServiceStatusWidget(orderService);
                               break;
-                            // case StatusOrder.driverToHospital:
-                            //   textOrange = 'On it!';
-                            //   description = ksdriverToHospital;
-                            //   statusWidget = kwdriverToHospitalStatusWidget;
-                            //   cardBottomWidget = driverInfoStatusWidget(
-                            //     driverInfoWidget(
-                            //       rider,
-                            //       // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
-                            //       // rider.vehicleType, //'Ysuku',
-                            //       // rider.phoneNum, //'DBQ 4021',
-                            //       // 4.5,
-                            //     ),
-                            //     orderService,
-                            //     useraccount.uid,
-                            //     rider,
-                            //   );
-                            //   break;
+
                             case StatusOrder.driverQueue:
                               textOrange = 'Queueing';
                               description = ksdriverQueue;
@@ -256,10 +136,6 @@ class _FinishedTabState extends State<FinishedTab> {
                               cardBottomWidget = driverInfoStatusWidget(
                                 driverInfoWidget(
                                   rider,
-                                  // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
-                                  // rider.vehicleType, //'Ysuku',
-                                  // rider.phoneNum, //'DBQ 4021',
-                                  // 4.5,
                                 ),
                                 orderService,
                                 useraccount.uid,
@@ -273,10 +149,6 @@ class _FinishedTabState extends State<FinishedTab> {
                               cardBottomWidget = driverInfoStatusWidget(
                                 driverInfoWidget(
                                   rider,
-                                  // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
-                                  // rider.vehicleType, //'Ysuku',
-                                  // rider.phoneNum, //'DBQ 4021',
-                                  // 4.5,
                                 ),
                                 orderService,
                                 useraccount.uid,
@@ -290,10 +162,6 @@ class _FinishedTabState extends State<FinishedTab> {
                               cardBottomWidget = driverInfoStatusWidget(
                                 driverInfoWidget(
                                   rider,
-                                  // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
-                                  // rider.vehicleType, //'Ysuku',
-                                  // rider.phoneNum, //'DBQ 4021',
-                                  // 4.5,
                                 ),
                                 orderService,
                                 useraccount.uid,
@@ -308,10 +176,7 @@ class _FinishedTabState extends State<FinishedTab> {
                               description = orderService.serviceType ==
                                       ServiceType.requestDelivery
                                   ? ksorderArrived
-                                  :
-                                  // ksorderFinished1 +
-                                  //     orderService.tokenNum.toString() +
-                                  ksorderFinished2;
+                                  : ksorderFinished2;
                               statusWidget = orderService.serviceType ==
                                       ServiceType.requestDelivery
                                   ? kworderArrivedStatusWidget
@@ -320,10 +185,6 @@ class _FinishedTabState extends State<FinishedTab> {
                               cardBottomWidget = driverInfoStatusWidget(
                                   driverInfoWidget(
                                     rider,
-                                    // ("${rider.firstName} ${rider.lastName}"), //'Mohamed Salah',
-                                    // rider.vehicleType, //'Ysuku',
-                                    // rider.phoneNum, //'DBQ 4021',
-                                    // 4.5,
                                   ),
                                   orderService,
                                   useraccount.uid,
@@ -372,57 +233,6 @@ class _FinishedTabState extends State<FinishedTab> {
                       },
                     );
                   }
-                  // if (currentRider == null) {
-                  // return Column(
-                  //   children: [
-                  //     gaphr(h: 155.5),
-                  //     Container(
-                  //       width: double.infinity,
-                  //       decoration: BoxDecoration(
-                  //         borderRadius: BorderRadius.circular(20.r),
-                  //         color: kcWhite,
-                  //       ),
-                  //       child: Padding(
-                  //         padding: EdgeInsets.symmetric(horizontal: 15.w),
-                  //         child: orderStatusWidget(
-                  //             statusWidget, textOrange, description),
-                  //       ),
-                  //     ),
-                  //     cardBottomWidget,
-                  //     gaphr(h: 23),
-                  //   ],
-                  // );
-                  // } else {
-                  //   cardBottomWidget = driverInfoStatusWidget(
-                  //       driverInfoWidget(
-                  //         currentRider!.firstName, //'Mohamed Salah',
-                  //         currentRider!.vehicleType, //'Ysuku',
-                  //         currentRider!.phoneNum, //'DBQ 4021',
-                  //         4.5,
-                  //       ),
-                  //       orderService,
-                  //       useraccount.uid);
-                  //   return Column(
-                  //     children: [
-                  //       gaphr(h: 110),
-                  //       gaphr(h: 45.5),
-                  //       Container(
-                  //         width: double.infinity,
-                  //         decoration: BoxDecoration(
-                  //           borderRadius: BorderRadius.circular(20.r),
-                  //           color: kcWhite,
-                  //         ),
-                  //         child: Padding(
-                  //           padding: EdgeInsets.symmetric(horizontal: 15.w),
-                  //           child: orderStatusWidget(
-                  //               statusWidget, textOrange, description),
-                  //         ),
-                  //       ),
-                  //       cardBottomWidget,
-                  //       gaphr(h: 23),
-                  //     ],
-                  //   );
-                  // }
                 }),
               ),
             );
@@ -457,8 +267,6 @@ class _FinishedTabState extends State<FinishedTab> {
     }
 
     return null;
-
-    // return streamRider.firstWhere((rider) => rider.workingStatus == '');
   }
 
   streamStartFindRiders(String orderId) async {
@@ -467,28 +275,23 @@ class _FinishedTabState extends State<FinishedTab> {
     streamSubscription1 = streamRiders.listen((riderList) async {
       if (riderList != null && riderList.isNotEmpty) {
         for (var i = 0; i < riderList.length; i++) {
-          // print(i);
-          // print('start loop');
           Rider rider = riderList[i];
 
           if (rider.orderCancelId != null) {
             if (rider.orderCancelId!.isNotEmpty &&
                 !rider.orderCancelId!.contains(orderId)) {
               streamSubscription1?.pause();
-              // print(rider.documentID);
+
               await FirestoreRepo()
                   .updateRiderPending(rider.documentID!, orderId);
               bool result =
                   await streamCheckRiderPending(rider.documentID!) ?? false;
               if (result) {
-                // print('if cancel id != null & after rider pending break');
                 break;
               } else {
-                // print('if cancel id x= null & after rider pending continue');
                 continue;
               }
             } else {
-              // print('stream paused');
               if (streamSubscription1!.isPaused) {
                 streamSubscription1?.resume();
               }
@@ -496,24 +299,19 @@ class _FinishedTabState extends State<FinishedTab> {
             }
           } else {
             streamSubscription1?.pause();
-            // print(rider.documentID);
+
             await FirestoreRepo()
                 .updateRiderPending(rider.documentID!, orderId);
             bool? result =
                 await streamCheckRiderPending(rider.documentID!) ?? false;
             if (result) {
-              // print('if cancel id == null & after rider pending break');
               break;
             } else {
-              // print('if cancel id == null & after rider pending continue');
               continue;
             }
           }
         }
-        // print('end for loop');
-      } else {
-        // print('rider list null or empty');
-      }
+      } else {}
     });
   }
 
@@ -550,26 +348,12 @@ class _FinishedTabState extends State<FinishedTab> {
                         fw: FontWeight.w600,
                       ),
                     ),
-                    // Container(
-                    //   decoration: BoxDecoration(
-                    //       color: kccontainerPink,
-                    //       borderRadius: BorderRadius.circular(10.r)),
-                    //   child: Padding(
-                    //     padding: EdgeInsets.symmetric(
-                    //         horizontal: 7.w, vertical: 1.h),
-                    //     child: Text(
-                    //       'AHD001D',
-                    //       style: kwtextStyleRD(fs: 15, c: kctextpurplepink),
-                    //       textAlign: TextAlign.left,
-                    //     ),
-                    //   ),
-                    // )
                   ],
                 ),
                 gaphr(h: 12),
                 Text(
-                  DateFormat('dd/MM/yyyy').format(
-                      orderService.orderDate ?? DateTime.now()), //'22/02/2022',
+                  DateFormat('dd/MM/yyyy')
+                      .format(orderService.orderDate ?? DateTime.now()),
                   style: kwtextStyleRD(
                     c: kcGreyLabel,
                     fs: 15,
@@ -588,7 +372,7 @@ class _FinishedTabState extends State<FinishedTab> {
                       ),
                     ),
                     Text(
-                      'RM ${orderService.totalPay.toStringAsFixed(2)}', //'RM 15.00',
+                      'RM ${orderService.totalPay.toStringAsFixed(2)}',
                       style: kwtextStyleRD(
                         c: kcprimarySwatch,
                         fs: 15,
@@ -630,7 +414,80 @@ class _FinishedTabState extends State<FinishedTab> {
                   }
                 },
               )
-            : gapw(w: 0),
+            : Row(
+                children: [
+                  Expanded(
+                    child: MaterialButton(
+                        shape: cornerR(r: 25),
+                        height: 38.h,
+                        color: kcWhite,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset(
+                              'assets/icons/call_icon.png',
+                              height: 13,
+                            ),
+                            gapwr(w: 10),
+                            Text(
+                              'Call',
+                              style: kwtextStyleRD(
+                                fs: 10,
+                                c: kcPrimary,
+                                fw: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        ),
+                        onPressed: () async {
+                          final Uri callLaunchUrl = Uri(
+                            scheme: 'tel',
+                            path: rider.phoneNum,
+                          );
+                          try {
+                            await launchUrl(callLaunchUrl);
+                          } on Exception catch (e) {
+                            print(e);
+                          }
+                        }),
+                  ),
+                  gapwr(w: 10),
+                  Expanded(
+                    child: MaterialButton(
+                        shape: cornerR(r: 25),
+                        color: kcPrimary,
+                        height: 38.h,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset('assets/icons/chat_icon.png',
+                                height: 13),
+                            gapwr(w: 10),
+                            Text(
+                              'Message',
+                              style: kwtextStyleRD(
+                                fs: 10,
+                                c: kcWhite,
+                                fw: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        ),
+                        onPressed: () async {
+                          final Uri smsLaunchUri = Uri(
+                            scheme: 'sms',
+                            path: rider.phoneNum,
+                            queryParameters: <String, String>{
+                              'body': Uri.encodeComponent('hello'),
+                            },
+                          );
+                          if (await canLaunchUrl(smsLaunchUri)) {
+                            await launchUrl(smsLaunchUri);
+                          }
+                        }),
+                  )
+                ],
+              ),
       ],
     );
   }
@@ -669,8 +526,6 @@ class _FinishedTabState extends State<FinishedTab> {
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        // mainAxisAlignment:
-                        //     MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
                             orderService.serviceType ==
@@ -686,7 +541,6 @@ class _FinishedTabState extends State<FinishedTab> {
                           gaphr(h: 8),
                           Text(
                             orderService.facility!.facilityName,
-                            //'Hospital Sultan Abdul Halim',
                             style: kwtextStyleRD(
                               c: kcSubtitleService.withOpacity(0.56),
                               fs: 12,
@@ -712,14 +566,12 @@ class _FinishedTabState extends State<FinishedTab> {
                         fw: FontWeight.w600,
                       ),
                     ),
-                    //tokenNumberWidget('AHD001D'),
                     gapw(w: 0),
                   ],
                 ),
                 gaphr(h: 12),
                 Text(
                   dateformatNumSlashI(DateTime.now()),
-                  //'22/02/2022',
                   style: kwtextStyleRD(
                     c: kcGreyLabel,
                     fs: 15,
@@ -738,7 +590,7 @@ class _FinishedTabState extends State<FinishedTab> {
                       ),
                     ),
                     Text(
-                      'RM ${orderService.totalPay.toStringAsFixed(2)}', //'RM 15.00',
+                      'RM ${orderService.totalPay.toStringAsFixed(2)}',
                       style: kwtextStyleRD(
                         c: kcprimarySwatch,
                         fs: 15,
@@ -782,7 +634,7 @@ class _FinishedTabState extends State<FinishedTab> {
                       ),
                     ),
                     Text(
-                      'RM ${orderService.totalPay.toStringAsFixed(2)}', //'RM 15.00',
+                      'RM ${orderService.totalPay.toStringAsFixed(2)}',
                       style: kwtextStyleRD(
                         c: kcOrange,
                         fs: 17,
@@ -821,7 +673,7 @@ class _FinishedTabState extends State<FinishedTab> {
       children: [
         statusWidget,
         Text(
-          textOrange, //'Congratulation!',
+          textOrange,
           style: kwtextStyleRD(
             ff: 'SF UI Text',
             fs: 32,
@@ -833,7 +685,7 @@ class _FinishedTabState extends State<FinishedTab> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25.w),
           child: Text(
-            description, //ksorderReceived,
+            description,
             style: kwtextStyleRD(fs: 15, c: kctextgrey, fw: FontWeight.w500),
             textAlign: TextAlign.center,
           ),
@@ -846,7 +698,6 @@ class _FinishedTabState extends State<FinishedTab> {
   Widget driverfoundStatusWidget(String name, String vehicleName,
       String vehiclePlateNum, double rate, String riderId) {
     return Column(
-      //crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         gaphr(h: 63.5),
         FutureBuilder(
@@ -855,12 +706,7 @@ class _FinishedTabState extends State<FinishedTab> {
               if (snapshot.hasData) {
                 Rider rider = snapshot.data;
                 return driverInfoWidget(
-                  //TODO LATER
                   rider,
-                  // rider.firstName, //name,
-                  // rider.vehicleType, //vehicleName,
-                  // rider.phoneNum, //vehiclePlateNum,
-                  //4.4 //rate,
                 );
               } else {
                 return Center(
@@ -882,10 +728,6 @@ class _FinishedTabState extends State<FinishedTab> {
 
   Widget driverInfoWidget(
     Rider rider,
-    // String name,
-    // String vehicleName,
-    // String vehiclePlateNum,
-    //double rate,
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -896,9 +738,7 @@ class _FinishedTabState extends State<FinishedTab> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
-                image: NetworkImage(rider.profile!
-                    .profileImageUrl!) //AssetImage('assets/images/mohamedsalah.png'),
-                ),
+                image: NetworkImage(rider.profile!.profileImageUrl!)),
           ),
         ),
         gapwr(w: 14),
@@ -906,7 +746,7 @@ class _FinishedTabState extends State<FinishedTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${rider.firstName} ${rider.lastName}', //name,
+              '${rider.firstName} ${rider.lastName}',
               style: kwtextStyleRD(
                 fs: 14,
                 c: kcPrimary,
@@ -920,16 +760,6 @@ class _FinishedTabState extends State<FinishedTab> {
                 c: kcsubtitleListTile1,
               ),
             ),
-            // Row(
-            //   mainAxisSize: MainAxisSize.min,
-            //   children: [
-            //     Text(
-            //       '${rate.toStringAsFixed(1)}',
-            //       style: kwtextStyleRD(
-            //           fs: 12, c: kcsubtitle3, fw: FontWeight.bold),
-            //     ),
-            //   ],
-            // )
           ],
         )
       ],
