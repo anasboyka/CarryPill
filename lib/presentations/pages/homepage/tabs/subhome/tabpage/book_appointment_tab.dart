@@ -332,6 +332,11 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                                   _selectedDay = selectedDay;
                                   _focusedDay = focusedDay;
                                 });
+                              } else {
+                                setState(() {
+                                  _selectedDay = selectedDay;
+                                  _focusedDay = focusedDay;
+                                });
                               }
                             },
                             onPageChanged: (focusedDay) {
